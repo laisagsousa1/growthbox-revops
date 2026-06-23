@@ -250,13 +250,6 @@ tr:hover td { background: var(--surface2); }
     <div class="nav-item" onclick="showPage('mensagens', this)">
       <span class="icon">💬</span> Mensagens
     </div>
-    <div class="nav-item" onclick="exportCSV()">
-      <span class="icon">📊</span> Exportar Planilha
-    </div>
-    <div class="nav-item" onclick="document.getElementById('import-csv').click()">
-      <span class="icon">📥</span> Importar CSV
-    </div>
-    <input type="file" id="import-csv" accept=".csv" style="display:none" onchange="importCSV(event)">
   </nav>
   <div class="sidebar-footer">
     Oficinas • Ipatinga MG
@@ -270,7 +263,6 @@ tr:hover td { background: var(--surface2); }
   <div class="topbar">
     <div class="topbar-title" id="page-title">Dashboard</div>
     <div class="topbar-actions">
-      <button class="btn btn-ghost btn-sm" onclick="exportCSV()">📊 Planilha</button>
       <button class="btn btn-primary btn-sm" onclick="openModal()">+ Novo Lead</button>
     </div>
   </div>

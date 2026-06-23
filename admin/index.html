@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrowthBox Admin — CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #060D1A;
+  --surface: #0D1929;
+  --surface2: #111E30;
+  --border: rgba(255,255,255,0.07);
+  --cyan: #0EA5E9;
+  --cyan-dim: rgba(14,165,233,0.12);
+  --orange: #F97316;
+  --green: #10B981;
+  --purple: #8B5CF6;
+  --red: #EF4444;
+  --gray: #64748B;
+  --text: #F1F5F9;
+  --text-dim: #94A3B8;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; bottom: 0; left: 0;
+  z-index: 100;
+}
+.sidebar-logo {
+  padding: 28px 24px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo .brand { font-size: 20px; font-weight: 900; }
+.sidebar-logo .brand .th { color: var(--cyan); }
+.sidebar-logo .tag { font-size: 11px; color: var(--text-dim); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+.sidebar-nav { padding: 16px 12px; flex: 1; }
+.nav-section { font-size: 10px; font-weight: 700; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; padding: 12px 12px 8px; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 14px; font-weight: 500; color: var(--text-dim);
+  cursor: pointer; transition: all 0.15s; margin-bottom: 2px;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--cyan-dim); color: var(--cyan); }
+.nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+.sidebar-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--gray);
+}
+
+/* ── MAIN ── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-title { font-size: 18px; font-weight: 700; }
+.topbar-actions { display: flex; gap: 10px; }
+
+/* ── BOTÕES ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 18px; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-primary { background: var(--cyan); color: #fff; }
+.btn-primary:hover { background: #0891d1; }
+.btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--surface); }
+.btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+/* ── CONTEÚDO ── */
+.page { padding: 28px 32px; display: none; }
+.page.active { display: block; }
+
+/* ── KPI CARDS ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.kpi-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 24px;
+}
+.kpi-label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.kpi-value { font-size: 36px; font-weight: 900; }
+.kpi-sub { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+.kpi-bar { height: 3px; border-radius: 2px; margin-top: 14px; }
+
+/* ── PIPELINE ── */
+.pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+.pipeline-col { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.pipeline-col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.pipeline-col-title { font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+.pipeline-count { font-size: 18px; font-weight: 900; }
+.pipeline-bar { height: 3px; border-radius: 2px; width: 100%; margin-bottom: 12px; }
+.pipeline-item { background: var(--surface2); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 12px; }
+.pipeline-item-name { font-weight: 600; color: var(--text); }
+.pipeline-item-city { color: var(--text-dim); margin-top: 2px; }
+
+/* ── TABELA DE LEADS ── */
+.filters-row { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; }
+.search-box {
+  flex: 1; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 14px; font-size: 14px;
+  color: var(--text); font-family: 'Inter', sans-serif;
+}
+.search-box::placeholder { color: var(--gray); }
+.search-box:focus { outline: none; border-color: var(--cyan); }
+.filter-select {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 14px; font-size: 13px;
+  color: var(--text); font-family: 'Inter', sans-serif; cursor: pointer;
+}
+.filter-select:focus { outline: none; }
+
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+thead { background: var(--surface2); }
+th { padding: 13px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
+td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface2); }
+
+/* ── STATUS BADGE ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 100px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.badge-novo { background: rgba(100,116,139,0.15); color: #94A3B8; }
+.badge-contactado { background: rgba(14,165,233,0.15); color: var(--cyan); }
+.badge-respondeu { background: rgba(249,115,22,0.15); color: var(--orange); }
+.badge-proposta { background: rgba(139,92,246,0.15); color: var(--purple); }
+.badge-fechado { background: rgba(16,185,129,0.15); color: var(--green); }
+.badge-perdido { background: rgba(239,68,68,0.15); color: var(--red); }
+
+.actions-cell { display: flex; gap: 6px; }
+.action-btn {
+  width: 30px; height: 30px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border: 1px solid var(--border);
+  background: var(--surface2); font-size: 14px; transition: all 0.15s;
+  text-decoration: none;
+}
+.action-btn:hover { background: var(--cyan-dim); border-color: var(--cyan); }
+.action-btn.wpp:hover { background: rgba(37,211,102,0.1); border-color: #25D366; }
+.action-btn.del:hover { background: rgba(239,68,68,0.1); border-color: var(--red); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); z-index: 200;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 32px; width: 520px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto;
+}
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.modal-title { font-size: 18px; font-weight: 800; }
+.modal-close { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: var(--text-dim); }
+
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: block; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; font-size: 14px;
+  color: var(--text); font-family: 'Inter', sans-serif;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--cyan); }
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+/* ── MENSAGENS ── */
+.msg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.msg-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+.msg-card-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.msg-card-tag { font-size: 10px; font-weight: 700; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.msg-card-body { font-size: 13px; color: var(--text-dim); line-height: 1.65; background: var(--surface2); border-radius: 10px; padding: 14px; margin-bottom: 14px; white-space: pre-wrap; }
+.msg-card-footer { display: flex; gap: 8px; }
+
+/* ── EMPTY STATE ── */
+.empty { text-align: center; padding: 60px 20px; }
+.empty-icon { font-size: 48px; margin-bottom: 16px; }
+.empty-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.empty-desc { font-size: 14px; color: var(--text-dim); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--green); color: white;
+  padding: 14px 20px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+  display: none; z-index: 999; animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">Growth<span class="th">Box</span></div>
+    <div class="tag">Admin CRM</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Principal</div>
+    <div class="nav-item active" onclick="showPage('dashboard', this)">
+      <span class="icon">📊</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('leads', this)">
+      <span class="icon">🏪</span> Leads
+    </div>
+    <div class="nav-section">Ferramentas</div>
+    <div class="nav-item" onclick="showPage('mensagens', this)">
+      <span class="icon">💬</span> Mensagens
+    </div>
+    <div class="nav-item" onclick="exportCSV()">
+      <span class="icon">📊</span> Exportar Planilha
+    </div>
+    <div class="nav-item" onclick="document.getElementById('import-csv').click()">
+      <span class="icon">📥</span> Importar CSV
+    </div>
+    <input type="file" id="import-csv" accept=".csv" style="display:none" onchange="importCSV(event)">
+  </nav>
+  <div class="sidebar-footer">
+    Oficinas • Ipatinga MG
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">Dashboard</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="exportCSV()">📊 Planilha</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">+ Novo Lead</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total de Leads</div>
+        <div class="kpi-value" id="kpi-total">0</div>
+        <div class="kpi-sub">Oficinas cadastradas</div>
+        <div class="kpi-bar" style="background: var(--cyan); opacity: 0.4;"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Contactados</div>
+        <div class="kpi-value" style="color: var(--cyan)" id="kpi-contactados">0</div>
+        <div class="kpi-sub">Mensagem enviada</div>
+        <div class="kpi-bar" style="background: var(--cyan);"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Responderam</div>
+        <div class="kpi-value" style="color: var(--orange)" id="kpi-responderam">0</div>
+        <div class="kpi-sub">Interesse demonstrado</div>
+        <div class="kpi-bar" style="background: var(--orange);"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Fechados</div>
+        <div class="kpi-value" style="color: var(--green)" id="kpi-fechados">0</div>
+        <div class="kpi-sub">Clientes convertidos</div>
+        <div class="kpi-bar" style="background: var(--green);"></div>
+      </div>
+    </div>
+
+    <div style="font-size: 14px; font-weight: 700; margin-bottom: 14px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Pipeline</div>
+    <div class="pipeline" id="pipeline-view"></div>
+  </div>
+
+  <!-- LEADS -->
+  <div class="page" id="page-leads">
+    <div class="filters-row">
+      <input class="search-box" type="text" placeholder="🔍 Buscar oficina..." oninput="renderTable()" id="search-input">
+      <select class="filter-select" onchange="renderTable()" id="filter-status">
+        <option value="">Todos os status</option>
+        <option value="novo">Novo</option>
+        <option value="contactado">Contactado</option>
+        <option value="respondeu">Respondeu</option>
+        <option value="proposta">Proposta</option>
+        <option value="fechado">Fechado</option>
+        <option value="perdido">Perdido</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Oficina</th>
+            <th>Telefone</th>
+            <th>Bairro</th>
+            <th>Status</th>
+            <th>Observação</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="leads-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MENSAGENS -->
+  <div class="page" id="page-mensagens">
+    <div class="msg-grid">
+
+      <div class="msg-card">
+        <div class="msg-card-tag">Abordagem Inicial</div>
+        <div class="msg-card-title">Mensagem 1 — Primeira Vez</div>
+        <div class="msg-card-body" id="msg1">Olá, tudo bem? 👋
+
+Meu nome é Laisa, sou da GrowthBox — agência de marketing focada em oficinas mecânicas.
+
+Vi que a [NOME DA OFICINA] fica aqui em Ipatinga e queria te perguntar: você já usa Google Ads para atrair clientes novos?
+
+A gente atende oficinas na região e os resultados têm sido bem consistentes — mais agendamentos, clientes chegando já buscando o serviço.
+
+Posso te mostrar como funcionaria pra você em 10 minutinhos?</div>
+        <div class="msg-card-footer">
+          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg1')">📋 Copiar</button>
+          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg1')">✏️ Editar</button>
+        </div>
+      </div>
+
+      <div class="msg-card">
+        <div class="msg-card-tag">Follow-up</div>
+        <div class="msg-card-title">Mensagem 2 — Retorno</div>
+        <div class="msg-card-body" id="msg2">Oi [NOME], passando pra dar um oi 😊
+
+Te mandei uma mensagem semana passada sobre Google Ads para a [NOME DA OFICINA].
+
+Sei que é corrido o dia a dia de oficina, então deixa eu ser direto: a gente consegue colocar sua oficina nos primeiros resultados do Google quando alguém pesquisa "oficina mecânica em Ipatinga".
+
+Pagamento só quando o cliente clica. Sem fidelidade.
+
+Vale uma conversa rápida?</div>
+        <div class="msg-card-footer">
+          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg2')">📋 Copiar</button>
+          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg2')">✏️ Editar</button>
+        </div>
+      </div>
+
+      <div class="msg-card">
+        <div class="msg-card-tag">Proposta</div>
+        <div class="msg-card-title">Mensagem 3 — Envio de Proposta</div>
+        <div class="msg-card-body" id="msg3">Oi [NOME]!
+
+Conforme conversamos, segue o resumo do que a GrowthBox faria pela [NOME DA OFICINA]:
+
+✅ Google Ads gerenciado — aparecer quando cliente pesquisa serviço
+✅ Sistema de agendamento online
+✅ Relatório mensal de resultados
+
+Investimento a partir de R$497/mês (tudo incluso, sem taxa de setup).
+
+Posso te mandar uma proposta formal ou agendar uma call de 20 minutos pra tirar dúvidas?</div>
+        <div class="msg-card-footer">
+          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg3')">📋 Copiar</button>
+          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg3')">✏️ Editar</button>
+        </div>
+      </div>
+
+      <div class="msg-card">
+        <div class="msg-card-tag">Fechamento</div>
+        <div class="msg-card-title">Mensagem 4 — Urgência</div>
+        <div class="msg-card-body" id="msg4">Oi [NOME], tudo bem?
+
+Só pra fechar: estamos com 1 vaga disponível para oficinas em Ipatinga este mês.
+
+A gente trabalha com exclusividade de área — ou seja, não atendemos duas oficinas concorrentes na mesma região.
+
+Se tiver interesse, posso garantir sua vaga agora. Caso contrário, prosseguimos com outra oficina da região.
+
+Me fala o que acha! 🤝</div>
+        <div class="msg-card-footer">
+          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg4')">📋 Copiar</button>
+          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg4')">✏️ Editar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL NOVO/EDITAR LEAD -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Novo Lead</div>
+      <div class="modal-close" onclick="closeModal()">×</div>
+    </div>
+    <input type="hidden" id="edit-id">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nome da Oficina *</label>
+        <input class="form-input" id="f-nome" placeholder="Ex: Oficina do João">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Telefone *</label>
+        <input class="form-input" id="f-tel" placeholder="31 9 9999-9999" oninput="formatTel(this)">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Bairro</label>
+        <input class="form-input" id="f-bairro" placeholder="Ex: Centro">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cidade</label>
+        <input class="form-input" id="f-cidade" value="Ipatinga" placeholder="Ipatinga">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Endereço</label>
+      <input class="form-input" id="f-end" placeholder="Rua, número">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select class="form-select" id="f-status">
+        <option value="novo">Novo</option>
+        <option value="contactado">Contactado</option>
+        <option value="respondeu">Respondeu</option>
+        <option value="proposta">Proposta</option>
+        <option value="fechado">Fechado</option>
+        <option value="perdido">Perdido</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Observações</label>
+      <textarea class="form-textarea" id="f-obs" placeholder="Notas sobre o lead..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveLead()">Salvar Lead</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── ESTADO ──
+let leads = JSON.parse(localStorage.getItem('growthbox_leads') || '[]');
+let editingId = null;
+
+const STATUS_LABELS = {
+  novo: 'Novo', contactado: 'Contactado', respondeu: 'Respondeu',
+  proposta: 'Proposta', fechado: 'Fechado', perdido: 'Perdido'
+};
+const STATUS_COLORS = {
+  novo: '#64748B', contactado: '#0EA5E9', respondeu: '#F97316',
+  proposta: '#8B5CF6', fechado: '#10B981', perdido: '#EF4444'
+};
+
+// ── NAVEGAÇÃO ──
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = { dashboard: 'Dashboard', leads: 'Leads — Oficinas de Ipatinga', mensagens: 'Templates de Mensagem' };
+  document.getElementById('page-title').textContent = titles[id] || id;
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'leads') renderTable();
+}
+
+// ── SALVAR ──
+function save() {
+  localStorage.setItem('growthbox_leads', JSON.stringify(leads));
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const total = leads.length;
+  const contactados = leads.filter(l => ['contactado','respondeu','proposta','fechado'].includes(l.status)).length;
+  const responderam = leads.filter(l => ['respondeu','proposta','fechado'].includes(l.status)).length;
+  const fechados = leads.filter(l => l.status === 'fechado').length;
+
+  document.getElementById('kpi-total').textContent = total;
+  document.getElementById('kpi-contactados').textContent = contactados;
+  document.getElementById('kpi-responderam').textContent = responderam;
+  document.getElementById('kpi-fechados').textContent = fechados;
+
+  const pipelineCols = ['novo','contactado','respondeu','proposta','fechado'];
+  const pipelineEl = document.getElementById('pipeline-view');
+  pipelineEl.innerHTML = pipelineCols.map(status => {
+    const items = leads.filter(l => l.status === status);
+    const color = STATUS_COLORS[status];
+    return `
+      <div class="pipeline-col">
+        <div class="pipeline-col-header">
+          <div class="pipeline-col-title">${STATUS_LABELS[status]}</div>
+          <div class="pipeline-count" style="color:${color}">${items.length}</div>
+        </div>
+        <div class="pipeline-bar" style="background:${color}; opacity:0.4;"></div>
+        ${items.slice(0,4).map(l => `
+          <div class="pipeline-item">
+            <div class="pipeline-item-name">${l.nome}</div>
+            <div class="pipeline-item-city">${l.bairro || l.cidade || 'Ipatinga'}</div>
+          </div>`).join('')}
+        ${items.length > 4 ? `<div style="font-size:11px;color:var(--text-dim);text-align:center;padding:6px">+${items.length-4} mais</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+// ── TABELA ──
+function renderTable() {
+  const search = (document.getElementById('search-input')?.value || '').toLowerCase();
+  const statusFilter = document.getElementById('filter-status')?.value || '';
+
+  let filtered = leads.filter(l => {
+    const matchSearch = !search || l.nome.toLowerCase().includes(search) || (l.bairro||'').toLowerCase().includes(search) || (l.telefone||'').includes(search);
+    const matchStatus = !statusFilter || l.status === statusFilter;
+    return matchSearch && matchStatus;
+  });
+
+  const tbody = document.getElementById('leads-tbody');
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">🏪</div><div class="empty-title">Nenhum lead ainda</div><div class="empty-desc">Clique em "+ Novo Lead" para adicionar oficinas</div></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(l => {
+    const tel = l.telefone.replace(/\D/g,'');
+    const wppMsg = encodeURIComponent(`Olá, tudo bem? 👋\n\nMeu nome é Laisa, sou da GrowthBox — agência de marketing focada em oficinas mecânicas.\n\nVi que a ${l.nome} fica aqui em Ipatinga e queria te perguntar: você já usa Google Ads para atrair clientes novos?`);
+    const wppUrl = `https://wa.me/55${tel}?text=${wppMsg}`;
+    return `
+      <tr>
+        <td><div style="font-weight:600">${l.nome}</div></td>
+        <td style="color:var(--text-dim)">${l.telefone || '—'}</td>
+        <td style="color:var(--text-dim)">${l.bairro || 'Ipatinga'}</td>
+        <td><span class="badge badge-${l.status}">${STATUS_LABELS[l.status]}</span></td>
+        <td style="color:var(--text-dim);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.obs || '—'}</td>
+        <td>
+          <div class="actions-cell">
+            <a class="action-btn wpp" href="${wppUrl}" target="_blank" title="WhatsApp">💬</a>
+            <div class="action-btn" onclick="openModal('${l.id}')" title="Editar">✏️</div>
+            <div class="action-btn del" onclick="deleteLead('${l.id}')" title="Excluir">🗑️</div>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+// ── MODAL ──
+function openModal(id = null) {
+  editingId = id;
+  document.getElementById('modal-title').textContent = id ? 'Editar Lead' : 'Novo Lead';
+  if (id) {
+    const l = leads.find(x => x.id === id);
+    document.getElementById('f-nome').value = l.nome || '';
+    document.getElementById('f-tel').value = l.telefone || '';
+    document.getElementById('f-bairro').value = l.bairro || '';
+    document.getElementById('f-cidade').value = l.cidade || 'Ipatinga';
+    document.getElementById('f-end').value = l.endereco || '';
+    document.getElementById('f-status').value = l.status || 'novo';
+    document.getElementById('f-obs').value = l.obs || '';
+  } else {
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-tel').value = '';
+    document.getElementById('f-bairro').value = '';
+    document.getElementById('f-cidade').value = 'Ipatinga';
+    document.getElementById('f-end').value = '';
+    document.getElementById('f-status').value = 'novo';
+    document.getElementById('f-obs').value = '';
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  editingId = null;
+}
+
+function saveLead() {
+  const nome = document.getElementById('f-nome').value.trim();
+  if (!nome) { alert('Informe o nome da oficina'); return; }
+
+  const data = {
+    nome,
+    telefone: document.getElementById('f-tel').value.trim(),
+    bairro: document.getElementById('f-bairro').value.trim(),
+    cidade: document.getElementById('f-cidade').value.trim() || 'Ipatinga',
+    endereco: document.getElementById('f-end').value.trim(),
+    status: document.getElementById('f-status').value,
+    obs: document.getElementById('f-obs').value.trim(),
+    updated_at: new Date().toISOString()
+  };
+
+  if (editingId) {
+    const idx = leads.findIndex(l => l.id === editingId);
+    leads[idx] = { ...leads[idx], ...data };
+  } else {
+    data.id = Date.now().toString();
+    data.created_at = new Date().toISOString();
+    leads.unshift(data);
+  }
+
+  save();
+  closeModal();
+  renderTable();
+  renderDashboard();
+  showToast(editingId ? 'Lead atualizado!' : 'Lead adicionado!');
+}
+
+function deleteLead(id) {
+  if (!confirm('Excluir este lead?')) return;
+  leads = leads.filter(l => l.id !== id);
+  save();
+  renderTable();
+  renderDashboard();
+  showToast('Lead removido');
+}
+
+// ── EXPORT / IMPORT ──
+function exportCSV() {
+  const headers = ['Nome', 'Telefone', 'Bairro', 'Cidade', 'Endereço', 'Status', 'Observações', 'Cadastrado em'];
+  const rows = leads.map(l => [
+    l.nome, l.telefone, l.bairro, l.cidade, l.endereco,
+    STATUS_LABELS[l.status] || l.status,
+    l.obs, l.created_at ? l.created_at.slice(0,10) : ''
+  ].map(v => `"${(v||'').replace(/"/g,'""')}"`));
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `growthbox-oficinas-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  showToast('Planilha exportada!');
+}
+function exportLeads() {
+  const json = JSON.stringify(leads, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `growthbox-leads-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importCSV(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const lines = ev.target.result.split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+    let added = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(',');
+      if (!cols[0]) continue;
+      const row = {};
+      headers.forEach((h, idx) => row[h] = (cols[idx]||'').trim().replace(/"/g,''));
+      leads.unshift({
+        id: Date.now().toString() + i,
+        nome: row.nome || row.name || row['nome da oficina'] || `Lead ${i}`,
+        telefone: row.telefone || row.phone || row.tel || '',
+        bairro: row.bairro || '',
+        cidade: row.cidade || 'Ipatinga',
+        endereco: row.endereco || row.endereço || '',
+        status: 'novo',
+        obs: '',
+        created_at: new Date().toISOString()
+      });
+      added++;
+    }
+    save(); renderTable(); renderDashboard();
+    showToast(`${added} leads importados!`);
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+// ── MENSAGENS ──
+function copyMsg(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Mensagem copiada!'));
+}
+function editMsg(id) {
+  const el = document.getElementById(id);
+  el.contentEditable = el.contentEditable === 'true' ? 'false' : 'true';
+  el.style.outline = el.contentEditable === 'true' ? '1px solid var(--cyan)' : 'none';
+  if (el.contentEditable === 'true') el.focus();
+}
+
+// ── FORMATAR TEL ──
+function formatTel(input) {
+  let v = input.value.replace(/\D/g,'');
+  if (v.length <= 2) v = v;
+  else if (v.length <= 6) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+  else if (v.length <= 10) v = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+  else v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7,11)}`;
+  input.value = v;
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2500);
+}
+
+// ── INIT ──
+renderDashboard();
+</script>
+</body>
+</html>

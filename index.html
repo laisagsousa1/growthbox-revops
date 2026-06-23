@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano RevOps — GrowthBox</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080F1E;
+  --surface: #0D1829;
+  --surface2: #111f35;
+  --border: rgba(255,255,255,0.07);
+  --r: #0EA5E9;
+  --e: #F97316;
+  --v: #8B5CF6;
+  --o: #10B981;
+  --text: #F1F5F9;
+  --muted: #64748B;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 32px 24px 60px;
+}
+
+/* Header */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 40px; flex-wrap: wrap; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-name { font-size: 22px; font-weight: 800; }
+.logo-name .g { color: #1D4ED8; }
+.logo-name .th { color: #0EA5E9; }
+.logo-name .bx { color: #64748B; }
+.logo-sep { width: 1px; height: 28px; background: var(--border); margin: 0 16px; }
+.plan-title { font-size: 22px; font-weight: 800; }
+.plan-title span { color: #0EA5E9; }
+.date-range {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px; padding: 8px 20px;
+  font-size: 13px; color: var(--muted); font-weight: 600;
+}
+
+/* Pillar legend */
+.legend {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 100px; padding: 8px 18px; font-size: 13px; font-weight: 600;
+}
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Week sections */
+.week {
+  margin-bottom: 28px;
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.week-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.week-badge {
+  font-size: 11px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; padding: 4px 14px;
+  border-radius: 100px;
+}
+.week-label { font-size: 17px; font-weight: 800; }
+.week-sublabel { font-size: 13px; color: var(--muted); margin-left: auto; }
+.week-meta { font-size: 13px; font-weight: 600; padding: 4px 14px; border-radius: 100px; margin-left: 8px; }
+
+/* Week R */
+.week-r .week-header { background: rgba(14,165,233,0.06); }
+.week-r .week-badge { background: rgba(14,165,233,0.15); color: #0EA5E9; }
+.week-r .week-meta { background: rgba(14,165,233,0.1); color: #0EA5E9; }
+/* Week E */
+.week-e .week-header { background: rgba(249,115,22,0.06); }
+.week-e .week-badge { background: rgba(249,115,22,0.15); color: #F97316; }
+.week-e .week-meta { background: rgba(249,115,22,0.1); color: #F97316; }
+/* Week V */
+.week-v .week-header { background: rgba(139,92,246,0.06); }
+.week-v .week-badge { background: rgba(139,92,246,0.15); color: #8B5CF6; }
+.week-v .week-meta { background: rgba(139,92,246,0.1); color: #8B5CF6; }
+/* Week O */
+.week-o .week-header { background: rgba(16,185,129,0.06); }
+.week-o .week-badge { background: rgba(16,185,129,0.15); color: #10B981; }
+.week-o .week-meta { background: rgba(16,185,129,0.1); color: #10B981; }
+
+/* Days grid */
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.day {
+  background: var(--surface);
+  padding: 16px 14px;
+  min-height: 130px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: background 0.15s;
+  cursor: default;
+  position: relative;
+}
+.day:hover { background: var(--surface2); }
+.day-date {
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1px;
+  display: flex; align-items: center; gap: 6px;
+}
+.day-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.day-action {
+  font-size: 12.5px; font-weight: 600; color: var(--text);
+  line-height: 1.45; flex: 1;
+}
+.day-format {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; padding: 3px 8px; border-radius: 4px;
+  width: fit-content;
+}
+.fmt-reels   { background: rgba(239,68,68,0.15);  color: #F87171; }
+.fmt-carrossel { background: rgba(14,165,233,0.15); color: #38BDF8; }
+.fmt-stories { background: rgba(168,85,247,0.15);  color: #C084FC; }
+.fmt-ad      { background: rgba(249,115,22,0.15);  color: #FB923C; }
+.fmt-feed    { background: rgba(16,185,129,0.15);  color: #34D399; }
+.fmt-live    { background: rgba(239,68,68,0.2);    color: #FCA5A5; }
+.fmt-dm      { background: rgba(234,179,8,0.15);   color: #FDE047; }
+.fmt-acao    { background: rgba(100,116,139,0.15); color: #94A3B8; }
+
+/* Today highlight */
+.day.today { background: rgba(14,165,233,0.07); }
+.day.today .day-date { color: #0EA5E9; }
+
+/* Summary */
+.summary {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-top: 32px;
+}
+.summary-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px 20px;
+}
+.summary-week { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.summary-obj { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.4; }
+.summary-meta { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.summary-target { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.summary-target-label { font-size: 12px; font-weight: 700; }
+
+/* Revenue bar */
+.revenue-bar {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px 28px; margin-top: 16px;
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+}
+.rev-title { font-size: 14px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.rev-item { text-align: center; }
+.rev-val { font-size: 26px; font-weight: 900; }
+.rev-lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.rev-divider { width: 1px; height: 40px; background: var(--border); }
+.rev-total .rev-val { color: #0EA5E9; font-size: 32px; }
+
+/* Tooltip */
+.day:hover .tooltip { display: block; }
+.tooltip {
+  display: none;
+  position: absolute; bottom: calc(100% + 8px); left: 0;
+  background: #1E293B; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 12px 14px;
+  font-size: 12px; line-height: 1.5; color: var(--text);
+  min-width: 200px; max-width: 260px;
+  z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .days { grid-template-columns: repeat(4, 1fr); }
+  .summary { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div style="display:flex;align-items:center">
+    <div class="logo">
+      <svg width="36" height="36" viewBox="0 0 60 60" fill="none">
+        <rect width="60" height="60" rx="12" fill="rgba(14,165,233,0.15)"/>
+        <path d="M12 42 L22 28 L30 35 L40 18 L48 28" stroke="#0EA5E9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M40 18 L48 18 L48 28" stroke="#0EA5E9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <rect x="14" y="44" width="5" height="8" rx="1.5" fill="#1D4ED8"/>
+        <rect x="23" y="38" width="5" height="14" rx="1.5" fill="#2563EB"/>
+        <rect x="32" y="32" width="5" height="20" rx="1.5" fill="#0EA5E9"/>
+        <rect x="41" y="26" width="5" height="26" rx="1.5" fill="#38BDF8"/>
+      </svg>
+      <div class="logo-name"><span class="g">Grow</span><span class="th">th</span><span class="bx">Box</span></div>
+    </div>
+    <div class="logo-sep"></div>
+    <div class="plan-title">Plano <span>RevOps</span></div>
+  </div>
+  <div class="date-range">📅 23 Jun — 22 Jul 2026</div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#0EA5E9"></div>R — Revenue Strategy</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F97316"></div>E — Engine de Trafego</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8B5CF6"></div>V — Velocidade Operacional</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div>O — Otimizacao Mensal</div>
+</div>
+
+<!-- SEMANA 1 -->
+<div class="week week-r">
+  <div class="week-header">
+    <div class="week-badge">Semana 1</div>
+    <div class="week-label">R — Revenue Strategy</div>
+    <div class="week-sublabel">Lancamento do Metodo RevOps</div>
+    <div class="week-meta">23 – 29 Jun</div>
+  </div>
+  <div class="days">
+
+    <div class="day today">
+      <div class="day-date"><div class="day-dot" style="background:#0EA5E9"></div>Seg 23/Jun</div>
+      <div class="day-action">Atualizar bio + pinned post anunciando o Metodo RevOps</div>
+      <div class="day-format fmt-feed">📌 Feed</div>
+      <div class="tooltip">Bio nova: "Criadora do Metodo RevOps | Estrategia + Trafego + Sistema para empresas que querem crescer de verdade"</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#0EA5E9"></div>Ter 24/Jun</div>
+      <div class="day-action">Reels: Epiphany Bridge — "como percebi que o problema nao era falta de trafego"</div>
+      <div class="day-format fmt-reels">🎬 Reels</div>
+      <div class="tooltip">Conte o momento de virada. Use a estrutura: Situacao → Problema → Epifania → Resultado. Mencione o Metodo RevOps como a solucao que surgiu.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#0EA5E9"></div>Qua 25/Jun</div>
+      <div class="day-action">Carrossel: "O que e o Metodo RevOps e os 4 pilares (R-E-V-O)"</div>
+      <div class="day-format fmt-carrossel">🖼 Carrossel</div>
+      <div class="tooltip">Slide 1: Hook forte. Slides 2-5: um pilar por slide. Slide 6: CTA para diagnostico gratuito.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#0EA5E9"></div>Qui 26/Jun</div>
+      <div class="day-action">Stories: bastidores do metodo na pratica com clientes</div>
+      <div class="day-format fmt-stories">📱 Stories</div>
+      <div class="tooltip">Sequencia de 5-7 stories. Mostre o processo sem revelar dados. Use caixinha de perguntas no final.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#0EA5E9"></div>Sex 27/Jun</div>
+      <div class="day-action">Reels: "Voce esta gastando com trafego pago do jeito errado"</div>
+      <div class="day-format fmt-reels">🎬 Reels</div>
+      <div class="tooltip">Hook de dor. Liste 3 erros comuns e apresente o RevOps como a alternativa certa.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#0EA5E9"></div>Sab 28/Jun</div>
+      <div class="day-action">Abrir 3 vagas para Diagnostico Gratuito de Crescimento (20 min)</div>
+      <div class="day-format fmt-stories">📱 Stories CTA</div>
+      <div class="tooltip">Link na bio para agendamento. Stories com contagem regressiva. Crie urgencia real: so 3 vagas essa semana.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#0EA5E9"></div>Dom 29/Jun</div>
+      <div class="day-action">Post de prova social: resultado de cliente com os pilares do RevOps</div>
+      <div class="day-format fmt-feed">📌 Feed</div>
+      <div class="tooltip">Print ou dado real de cliente. Sempre anonimize se necessario. Foque no resultado, nao no processo.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEMANA 2 -->
+<div class="week week-e">
+  <div class="week-header">
+    <div class="week-badge">Semana 2</div>
+    <div class="week-label">E — Engine de Trafego</div>
+    <div class="week-sublabel">Ligar anuncios + Dream 100</div>
+    <div class="week-meta">30 Jun – 6 Jul</div>
+  </div>
+  <div class="days">
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#F97316"></div>Seg 30/Jun</div>
+      <div class="day-action">Subir 1o anuncio Meta Ads usando Reels da Epiphany Bridge como criativo</div>
+      <div class="day-format fmt-ad">💰 Meta Ad</div>
+      <div class="tooltip">Objetivo: alcance ou visualizacoes de video. Publico: empresarios 28-45, interesses em marketing digital, vendas e empreendedorismo.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#F97316"></div>Ter 01/Jul</div>
+      <div class="day-action">Mapear Dream 100: listar 20 perfis que falam com empresarios. Comecar a comentar com inteligencia</div>
+      <div class="day-format fmt-acao">⚡ Acao</div>
+      <div class="tooltip">Dream 100 (Brunson): quem ja tem sua audiencia dos sonhos? Comentarios com valor real, nao "otimo post!". Objetivo: aparecer no radar deles.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#F97316"></div>Qua 02/Jul</div>
+      <div class="day-action">Carrossel: "O pilar E do RevOps — trafego que gera cliente, nao so clique"</div>
+      <div class="day-format fmt-carrossel">🖼 Carrossel</div>
+      <div class="tooltip">Explique a diferenca entre boost e trafego estrategico. Use dados reais ou benchmark do mercado.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#F97316"></div>Qui 03/Jul</div>
+      <div class="day-action">Stories: mostrar diagnosticos acontecendo (sem dados do cliente)</div>
+      <div class="day-format fmt-stories">📱 Stories</div>
+      <div class="tooltip">Mostre o processo: tela de reuniao, anotacoes, framework sendo aplicado. Humaniza o metodo.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#F97316"></div>Sex 04/Jul</div>
+      <div class="day-action">Reels: "Quanto custa um lead no seu nicho? O nosso custa R$X"</div>
+      <div class="day-format fmt-reels">🎬 Reels</div>
+      <div class="tooltip">Use dado real do seu negocio ou de cliente. Numeros reais geram muito mais engajamento que conceitos abstratos.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#F97316"></div>Sab 05/Jul</div>
+      <div class="day-action">Subir 2o anuncio — hook de dor: "Voce investe em trafego e nao ve resultado?"</div>
+      <div class="day-format fmt-ad">💰 Meta Ad</div>
+      <div class="tooltip">Teste criativo diferente com o mesmo publico da semana passada. Compare CTR e custo por resultado entre os dois.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#F97316"></div>Dom 06/Jul</div>
+      <div class="day-action">Post de autoridade: mencionar RevOps + resultado de diagnostico</div>
+      <div class="day-format fmt-feed">📌 Feed</div>
+      <div class="tooltip">Compartilhe um insight que surgiu nos diagnosticos da semana. Ensine algo valioso sem entregar tudo.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEMANA 3 -->
+<div class="week week-v">
+  <div class="week-header">
+    <div class="week-badge">Semana 3</div>
+    <div class="week-label">V — Velocidade Operacional</div>
+    <div class="week-sublabel">Converter diagnosticos em clientes</div>
+    <div class="week-meta">7 – 13 Jul</div>
+  </div>
+  <div class="days">
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#8B5CF6"></div>Seg 07/Jul</div>
+      <div class="day-action">Lançar Auditoria RevOps R$197 — diagnostico completo + plano de 30 dias</div>
+      <div class="day-format fmt-feed">📌 Feed + Stories</div>
+      <div class="tooltip">Value Ladder (Brunson): quem nao esta pronto para o pacote mensal entra pela Auditoria. Isso filtra curioso de serio e ja cobre CAC.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#8B5CF6"></div>Ter 08/Jul</div>
+      <div class="day-action">Reels: "Por que auditar antes de escalar o trafego"</div>
+      <div class="day-format fmt-reels">🎬 Reels</div>
+      <div class="tooltip">Analogia: voce nao bota turbo em carro com motor quebrado. A auditoria e o diagnostico antes do remedio.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#8B5CF6"></div>Qua 09/Jul</div>
+      <div class="day-action">Carrossel: "O pilar V — o que acontece quando voce tem sistema antes de ter trafego"</div>
+      <div class="day-format fmt-carrossel">🖼 Carrossel</div>
+      <div class="tooltip">Mostre o antes/depois operacional. Empresa sem sistema vs empresa com sistema rodando trafego.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#8B5CF6"></div>Qui 10/Jul</div>
+      <div class="day-action">Stories: Soap Opera Sequence — historia de cliente antes/depois em 5 stories sequenciais</div>
+      <div class="day-format fmt-stories">📱 Stories Sequencia</div>
+      <div class="tooltip">Soap Opera (Brunson): Ep1 situacao dificil → Ep2 tentativas que falharam → Ep3 descoberta do metodo → Ep4 transformacao → Ep5 vida hoje + CTA.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#8B5CF6"></div>Sex 11/Jul</div>
+      <div class="day-action">Reels: "3 sinais de que sua operacao nao esta pronta para escalar"</div>
+      <div class="day-format fmt-reels">🎬 Reels</div>
+      <div class="tooltip">Hook de identificacao: a pessoa ve os 3 sinais e se reconhece. Isso gera comentarios e compartilhamentos.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#8B5CF6"></div>Sab 12/Jul</div>
+      <div class="day-action">Interagir com Dream 100 via DM — valor primeiro, sem pitch</div>
+      <div class="day-format fmt-dm">✉️ DM Estrategico</div>
+      <div class="tooltip">Nao venda nada. Envie um insight relevante, elogie um conteudo especifico, faca uma pergunta inteligente. Objetivo: criar relacionamento.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#8B5CF6"></div>Dom 13/Jul</div>
+      <div class="day-action">Post de urgencia: "Ultimas 2 vagas de Auditoria RevOps em julho"</div>
+      <div class="day-format fmt-feed">📌 Feed + Stories</div>
+      <div class="tooltip">Crie escassez real. Se voce tem limite de capacidade, use isso. Urgencia falsa queima credibilidade.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEMANA 4 -->
+<div class="week week-o">
+  <div class="week-header">
+    <div class="week-badge">Semana 4</div>
+    <div class="week-label">O — Otimizacao Mensal</div>
+    <div class="week-sublabel">Revisar + plantar semente de agosto</div>
+    <div class="week-meta">14 – 22 Jul</div>
+  </div>
+  <div class="days">
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Seg 14/Jul</div>
+      <div class="day-action">Carrossel: "O que o Metodo RevOps entregou em julho" — resultado do proprio negocio</div>
+      <div class="day-format fmt-carrossel">🖼 Carrossel</div>
+      <div class="tooltip">Transparencia gera autoridade. Compartilhe numeros reais: diagnosticos realizados, auditorias vendidas, clientes fechados, receita gerada.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Ter 15/Jul</div>
+      <div class="day-action">Reels: "O que eu faria diferente se começasse a GrowthBox hoje"</div>
+      <div class="day-format fmt-reels">🎬 Reels</div>
+      <div class="tooltip">Conteudo de vulnerabilidade controlada. Gera conexao e humaniza a marca. Sempre termine com aprendizado aplicavel.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Qua 16/Jul</div>
+      <div class="day-action">Revisar metricas dos anuncios: pausar o que nao converteu, escalar o vencedor</div>
+      <div class="day-format fmt-acao">⚡ Acao Interna</div>
+      <div class="tooltip">Regra: se um ad nao gerou resultado em 7 dias com orcamento justo, pause. Duplique o orcamento do ad vencedor.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Qui 17/Jul</div>
+      <div class="day-action">Stories: Seinfeld — bastidor do dia a dia, sem vender nada. So conectar</div>
+      <div class="day-format fmt-stories">📱 Stories Leve</div>
+      <div class="tooltip">Seinfeld Sequence (Brunson): conteudo sobre nada. Rotina, curiosidade do dia, pensamento aleatorio. Mantém audiencia aquecida sem pitch.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Sex 18/Jul</div>
+      <div class="day-action">Anunciar lista VIP para agosto: X vagas para o Metodo RevOps completo</div>
+      <div class="day-format fmt-stories">📱 Stories + Feed</div>
+      <div class="tooltip">Crie antecipacao para o proximo ciclo. Lista VIP recebe oferta antes de todo mundo e com condicao especial.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Sab 19/Jul</div>
+      <div class="day-action">Reels: depoimento ou print de resultado de cliente</div>
+      <div class="day-format fmt-reels">🎬 Reels</div>
+      <div class="tooltip">Prova social e o ativo mais valioso. Video depoimento converte mais que texto. Se possivel, grave junto com o cliente.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Dom 20/Jul</div>
+      <div class="day-action">Live 30 min: Perfect Webinar simplificado — como o RevOps funciona na pratica + oferta</div>
+      <div class="day-format fmt-live">🔴 Live</div>
+      <div class="tooltip">Perfect Webinar (Brunson): 10 min ensinando algo com valor real → 10 min apresentando o metodo → 10 min oferta + Q&A. Converta ao vivo.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Seg 21/Jul</div>
+      <div class="day-action">DM para quem assistiu a live: convite direto para conversa</div>
+      <div class="day-format fmt-dm">✉️ DM Follow-up</div>
+      <div class="tooltip">Nao envie link de vendas direto. Pergunte: "O que achou da live? Tem alguma duvida sobre o RevOps?" Inicie conversa, depois convide.</div>
+    </div>
+
+    <div class="day">
+      <div class="day-date"><div class="day-dot" style="background:#10B981"></div>Ter 22/Jul</div>
+      <div class="day-action">Post de encerramento do ciclo + abertura de agenda para agosto</div>
+      <div class="day-format fmt-feed">📌 Feed</div>
+      <div class="tooltip">Feche o ciclo com gratidao e resultados. Abra as vagas de agosto com uma data limite clara. Comece o proximo ciclo RevOps.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="summary-card">
+    <div class="summary-week" style="color:#0EA5E9">Semana 1 — R</div>
+    <div class="summary-obj">Lançar o Metodo RevOps e capturar atencao</div>
+    <div class="summary-meta">Epiphany Bridge · New Opportunity · Attractive Character</div>
+    <div class="summary-target">
+      <div class="day-dot" style="background:#0EA5E9;width:8px;height:8px;border-radius:50%"></div>
+      <div class="summary-target-label" style="color:#0EA5E9">Meta: 10 pedidos de diagnostico</div>
+    </div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-week" style="color:#F97316">Semana 2 — E</div>
+    <div class="summary-obj">Ligar maquina de aquisicao + Dream 100</div>
+    <div class="summary-meta">Dream 100 · Fill Your Funnel · Traffic Secrets</div>
+    <div class="summary-target">
+      <div class="day-dot" style="background:#F97316;width:8px;height:8px;border-radius:50%"></div>
+      <div class="summary-target-label" style="color:#F97316">Meta: 3 diagnosticos + 1 proposta</div>
+    </div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-week" style="color:#8B5CF6">Semana 3 — V</div>
+    <div class="summary-obj">Converter diagnosticos em clientes</div>
+    <div class="summary-meta">Hook-Story-Offer · Value Ladder · Soap Opera</div>
+    <div class="summary-target">
+      <div class="day-dot" style="background:#8B5CF6;width:8px;height:8px;border-radius:50%"></div>
+      <div class="summary-target-label" style="color:#8B5CF6">Meta: 2 auditorias + 1 cliente fechado</div>
+    </div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-week" style="color:#10B981">Semana 4 — O</div>
+    <div class="summary-obj">Revisar + preparar agosto com lista VIP</div>
+    <div class="summary-meta">Seinfeld Sequence · Perfect Webinar · Follow-up</div>
+    <div class="summary-target">
+      <div class="day-dot" style="background:#10B981;width:8px;height:8px;border-radius:50%"></div>
+      <div class="summary-target-label" style="color:#10B981">Meta: 2 clientes agosto + lista VIP</div>
+    </div>
+  </div>
+</div>
+
+<!-- Revenue -->
+<div class="revenue-bar">
+  <div class="rev-title">Receita estimada do ciclo</div>
+  <div class="rev-divider"></div>
+  <div class="rev-item">
+    <div class="rev-val" style="color:#8B5CF6">R$394</div>
+    <div class="rev-lbl">2 Auditorias RevOps</div>
+  </div>
+  <div class="rev-divider"></div>
+  <div class="rev-item">
+    <div class="rev-val" style="color:#0EA5E9">R$1.997</div>
+    <div class="rev-lbl">1 Pacote Mensal</div>
+  </div>
+  <div class="rev-divider"></div>
+  <div class="rev-item rev-total">
+    <div class="rev-val">R$2.391</div>
+    <div class="rev-lbl">Total minimo do ciclo</div>
+  </div>
+  <div class="rev-divider"></div>
+  <div class="rev-item">
+    <div class="rev-val" style="color:#10B981; font-size:20px">+ Lista VIP</div>
+    <div class="rev-lbl">semente para agosto</div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -318,11 +318,11 @@ tr:hover td { background: var(--surface2); }
       <table>
         <thead>
           <tr>
-            <th>Oficina</th>
-            <th>Telefone</th>
-            <th>Bairro</th>
+            <th>Nome</th>
+            <th>Contato</th>
+            <th>Negócio</th>
+            <th>Origem</th>
             <th>Status</th>
-            <th>Observação</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -424,29 +424,56 @@ Me fala o que acha! 🤝</div>
     <input type="hidden" id="edit-id">
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Nome da Oficina *</label>
-        <input class="form-input" id="f-nome" placeholder="Ex: Oficina do João">
+        <label class="form-label">Nome *</label>
+        <input class="form-input" id="f-nome" placeholder="Ex: Maria Silva">
       </div>
       <div class="form-group">
-        <label class="form-label">Telefone *</label>
+        <label class="form-label">Telefone</label>
         <input class="form-input" id="f-tel" placeholder="31 9 9999-9999" oninput="formatTel(this)">
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Bairro</label>
-        <input class="form-input" id="f-bairro" placeholder="Ex: Centro">
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" id="f-email" placeholder="email@exemplo.com">
+    </div>
+    <div id="form-dados-site" style="display:none">
+      <div style="font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px;padding-top:16px;border-top:1px solid var(--border)">Dados do formulário</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nicho</label>
+          <input class="form-input" id="f-nicho" readonly style="opacity:.7">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo</label>
+          <input class="form-input" id="f-tipo" readonly style="opacity:.7">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ticket médio</label>
+          <input class="form-input" id="f-ticket" readonly style="opacity:.7">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Faturamento</label>
+          <input class="form-input" id="f-faturamento" readonly style="opacity:.7">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Principal desafio</label>
+          <input class="form-input" id="f-desafio" readonly style="opacity:.7">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Como capta clientes</label>
+          <input class="form-input" id="f-captacao" readonly style="opacity:.7">
+        </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Cidade</label>
-        <input class="form-input" id="f-cidade" value="Ipatinga" placeholder="Ipatinga">
+        <label class="form-label">Tráfego pago</label>
+        <input class="form-input" id="f-trafego" readonly style="opacity:.7">
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Endereço</label>
-      <input class="form-input" id="f-end" placeholder="Rua, número">
-    </div>
-    <div class="form-group">
+    <div class="form-group" style="margin-top:16px">
       <label class="form-label">Status</label>
       <select class="form-select" id="f-status">
         <option value="novo">Novo</option>
@@ -553,20 +580,31 @@ function renderTable() {
   }
 
   tbody.innerHTML = filtered.map(l => {
-    const tel = l.telefone.replace(/\D/g,'');
-    const wppMsg = encodeURIComponent(`Olá, tudo bem? 👋\n\nMeu nome é Laisa, sou da GrowthBox — agência de marketing focada em oficinas mecânicas.\n\nVi que a ${l.nome} fica aqui em Ipatinga e queria te perguntar: você já usa Google Ads para atrair clientes novos?`);
-    const wppUrl = `https://wa.me/55${tel}?text=${wppMsg}`;
+    const tel = (l.telefone || '').replace(/\D/g,'');
+    const wppUrl = `https://wa.me/55${tel}`;
+    const origemBadge = l.origem === 'site'
+      ? `<span class="badge" style="background:rgba(14,165,233,.12);color:var(--cyan)">🌐 Site</span>`
+      : `<span class="badge" style="background:rgba(100,116,139,.12);color:var(--gray)">Manual</span>`;
     return `
       <tr>
-        <td><div style="font-weight:600">${l.nome}</div></td>
-        <td style="color:var(--text-dim)">${l.telefone || '—'}</td>
-        <td style="color:var(--text-dim)">${l.bairro || 'Ipatinga'}</td>
+        <td>
+          <div style="font-weight:600">${l.nome}</div>
+          ${l.nicho ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${l.nicho}</div>` : ''}
+        </td>
+        <td>
+          <div style="color:var(--text-dim)">${l.telefone || '—'}</div>
+          ${l.email ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${l.email}</div>` : ''}
+        </td>
+        <td style="color:var(--text-dim);font-size:12px">
+          ${l.faturamento ? `<div>${l.faturamento}</div>` : ''}
+          ${l.ticket ? `<div>Ticket: ${l.ticket}</div>` : ''}
+        </td>
+        <td>${origemBadge}</td>
         <td><span class="badge badge-${l.status}">${STATUS_LABELS[l.status]}</span></td>
-        <td style="color:var(--text-dim);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.obs || '—'}</td>
         <td>
           <div class="actions-cell">
             <a class="action-btn wpp" href="${wppUrl}" target="_blank" title="WhatsApp">💬</a>
-            <div class="action-btn" onclick="openModal('${l.id}')" title="Editar">✏️</div>
+            <div class="action-btn" onclick="openModal('${l.id}')" title="Ver / Editar">✏️</div>
             <div class="action-btn del" onclick="deleteLead('${l.id}')" title="Excluir">🗑️</div>
           </div>
         </td>
@@ -578,23 +616,33 @@ function renderTable() {
 function openModal(id = null) {
   editingId = id;
   document.getElementById('modal-title').textContent = id ? 'Editar Lead' : 'Novo Lead';
+  const dadosSite = document.getElementById('form-dados-site');
   if (id) {
     const l = leads.find(x => x.id === id);
     document.getElementById('f-nome').value = l.nome || '';
     document.getElementById('f-tel').value = l.telefone || '';
-    document.getElementById('f-bairro').value = l.bairro || '';
-    document.getElementById('f-cidade').value = l.cidade || 'Ipatinga';
-    document.getElementById('f-end').value = l.endereco || '';
+    document.getElementById('f-email').value = l.email || '';
     document.getElementById('f-status').value = l.status || 'novo';
     document.getElementById('f-obs').value = l.obs || '';
+    if (l.origem === 'site') {
+      dadosSite.style.display = 'block';
+      document.getElementById('f-nicho').value = l.nicho || '';
+      document.getElementById('f-tipo').value = l.tipo || '';
+      document.getElementById('f-ticket').value = l.ticket || '';
+      document.getElementById('f-faturamento').value = l.faturamento || '';
+      document.getElementById('f-desafio').value = l.desafio || '';
+      document.getElementById('f-captacao').value = l.captacao || '';
+      document.getElementById('f-trafego').value = l.trafego || '';
+    } else {
+      dadosSite.style.display = 'none';
+    }
   } else {
     document.getElementById('f-nome').value = '';
     document.getElementById('f-tel').value = '';
-    document.getElementById('f-bairro').value = '';
-    document.getElementById('f-cidade').value = 'Ipatinga';
-    document.getElementById('f-end').value = '';
+    document.getElementById('f-email').value = '';
     document.getElementById('f-status').value = 'novo';
     document.getElementById('f-obs').value = '';
+    dadosSite.style.display = 'none';
   }
   document.getElementById('modal-overlay').classList.add('open');
 }
@@ -611,9 +659,7 @@ function saveLead() {
   const data = {
     nome,
     telefone: document.getElementById('f-tel').value.trim(),
-    bairro: document.getElementById('f-bairro').value.trim(),
-    cidade: document.getElementById('f-cidade').value.trim() || 'Ipatinga',
-    endereco: document.getElementById('f-end').value.trim(),
+    email: document.getElementById('f-email').value.trim(),
     status: document.getElementById('f-status').value,
     obs: document.getElementById('f-obs').value.trim(),
     updated_at: new Date().toISOString()

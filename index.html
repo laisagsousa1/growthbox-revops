@@ -709,8 +709,30 @@ function irPara(etapa) {
 
 function enviarLead(e) {
   e.preventDefault();
-  const nome = document.getElementById('f-nome').value.trim();
-  const msg = `Olá! Me chamo ${nome} e quero agendar um diagnóstico com a GrowthBox.`;
+  const v = id => document.getElementById(id).value.trim();
+
+  const lead = {
+    id: Date.now().toString(),
+    nome: v('f-nome'),
+    telefone: v('f-tel'),
+    email: v('f-email'),
+    nicho: v('f-nicho'),
+    tipo: v('f-tipo'),
+    ticket: v('f-ticket'),
+    faturamento: v('f-faturamento'),
+    desafio: v('f-desafio'),
+    captacao: v('f-captacao'),
+    trafego: v('f-trafego'),
+    status: 'novo',
+    origem: 'site',
+    obs: '',
+    created_at: new Date().toISOString()
+  };
+  const leads = JSON.parse(localStorage.getItem('growthbox_leads') || '[]');
+  leads.unshift(lead);
+  localStorage.setItem('growthbox_leads', JSON.stringify(leads));
+
+  const msg = `Olá! Me chamo ${lead.nome} e quero agendar um diagnóstico com a GrowthBox.`;
   window.open(`https://wa.me/5531973367476?text=${encodeURIComponent(msg)}`, '_blank');
 }
 </script>

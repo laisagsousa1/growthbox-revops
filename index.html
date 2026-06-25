@@ -245,6 +245,33 @@ section { padding: 100px 0; }
 .form-select:focus { border-color: rgba(14,165,233,.5); box-shadow: 0 0 0 3px rgba(14,165,233,.08); }
 .form-select option { background: #0D1829; color: var(--text); }
 .form-select.placeholder { color: var(--muted); }
+.form-steps { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+.form-step-item { display: flex; align-items: center; gap: 8px; }
+.form-step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  background: var(--border); color: var(--muted);
+  transition: background .3s, color .3s;
+}
+.form-step-num.active { background: var(--cyan); color: var(--bg); }
+.form-step-num.done { background: rgba(14,165,233,.2); color: var(--cyan); }
+.form-step-label { font-size: 12px; font-weight: 700; color: var(--muted); transition: color .3s; }
+.form-step-label.active { color: var(--text); }
+.form-step-divider { flex: 1; height: 1px; background: var(--border); }
+.form-pane { display: none; }
+.form-pane.active { display: block; }
+.btn-next {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: white; border: none; border-radius: 100px;
+  padding: 16px; font-size: 15px; font-weight: 800; cursor: pointer;
+  font-family: 'Inter', sans-serif; margin-top: 8px;
+  transition: transform .2s; box-shadow: 0 8px 32px rgba(14,165,233,.2);
+}
+.btn-next:hover { transform: translateY(-2px); }
+.btn-back { background: none; border: none; color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; padding: 8px 0; display: block; margin: 0 auto; }
+.btn-back:hover { color: var(--text); }
 .form-privacy { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
 .form-benefits { display: flex; flex-direction: column; gap: 20px; margin-top: 40px; }
 .form-benefit { display: flex; align-items: flex-start; gap: 16px; }
@@ -344,51 +371,71 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
         <div class="form-card">
           <div class="form-title">Quero agendar meu diagnóstico</div>
           <div class="form-sub">Preencha os dados abaixo. Nossa equipe entra em contato em até 24h.</div>
+          <div class="form-steps">
+            <div class="form-step-item">
+              <div class="form-step-num active" id="step-num-1">1</div>
+              <div class="form-step-label active" id="step-lbl-1">Seus dados</div>
+            </div>
+            <div class="form-step-divider"></div>
+            <div class="form-step-item">
+              <div class="form-step-num" id="step-num-2">2</div>
+              <div class="form-step-label" id="step-lbl-2">Seu negócio</div>
+            </div>
+          </div>
           <form id="leadForm" onsubmit="enviarLead(event)">
-            <div class="form-group">
-              <label class="form-label" for="f-nome">Seu nome</label>
-              <input class="form-input" type="text" id="f-nome" name="nome" placeholder="Ex: Maria Silva" required>
+            <div class="form-pane active" id="pane-1">
+              <div class="form-group">
+                <label class="form-label" for="f-nome">Seu nome</label>
+                <input class="form-input" type="text" id="f-nome" name="nome" placeholder="Ex: Maria Silva" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-tel">Telefone / WhatsApp</label>
+                <input class="form-input" type="tel" id="f-tel" name="telefone" placeholder="(31) 9 9999-9999" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-email">E-mail</label>
+                <input class="form-input" type="email" id="f-email" name="email" placeholder="seu@email.com" required>
+              </div>
+              <button type="button" class="btn-next" onclick="irParaEtapa2()">
+                Continuar
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
             </div>
-            <div class="form-group">
-              <label class="form-label" for="f-tel">Telefone / WhatsApp</label>
-              <input class="form-input" type="tel" id="f-tel" name="telefone" placeholder="(31) 9 9999-9999" required>
+            <div class="form-pane" id="pane-2">
+              <div class="form-group">
+                <label class="form-label" for="f-desafio">Principal desafio hoje</label>
+                <select class="form-select placeholder" id="f-desafio" name="desafio" required onchange="this.classList.remove('placeholder')">
+                  <option value="" disabled selected>Selecione uma opção</option>
+                  <option value="Gerar mais leads">Gerar mais leads</option>
+                  <option value="Fechar mais clientes">Fechar mais clientes</option>
+                  <option value="Escalar o faturamento">Escalar o faturamento</option>
+                  <option value="Estruturar o time de vendas">Estruturar o time de vendas</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-trafego">Já investe em tráfego pago?</label>
+                <select class="form-select placeholder" id="f-trafego" name="trafego" required onchange="this.classList.remove('placeholder')">
+                  <option value="" disabled selected>Selecione uma opção</option>
+                  <option value="Sim, já rodo anúncios">Sim, já rodo anúncios</option>
+                  <option value="Não, nunca rodei">Não, nunca rodei</option>
+                  <option value="Já rodei mas parei">Já rodei mas parei</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-faturamento">Faturamento mensal da empresa</label>
+                <select class="form-select placeholder" id="f-faturamento" name="faturamento" required onchange="this.classList.remove('placeholder')">
+                  <option value="" disabled selected>Selecione uma opção</option>
+                  <option value="Até R$20 mil">Até R$20 mil</option>
+                  <option value="R$20 mil a R$100 mil">R$20 mil a R$100 mil</option>
+                  <option value="Acima de R$100 mil">Acima de R$100 mil</option>
+                </select>
+              </div>
+              <button type="submit" class="btn-form-submit">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+                Agendar meu diagnóstico
+              </button>
+              <button type="button" class="btn-back" onclick="voltarEtapa1()">&#8592; Voltar</button>
             </div>
-            <div class="form-group">
-              <label class="form-label" for="f-email">E-mail</label>
-              <input class="form-input" type="email" id="f-email" name="email" placeholder="seu@email.com" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="f-desafio">Principal desafio hoje</label>
-              <select class="form-select placeholder" id="f-desafio" name="desafio" required onchange="this.classList.remove('placeholder')">
-                <option value="" disabled selected>Selecione uma opção</option>
-                <option value="Gerar mais leads">Gerar mais leads</option>
-                <option value="Fechar mais clientes">Fechar mais clientes</option>
-                <option value="Escalar o faturamento">Escalar o faturamento</option>
-                <option value="Estruturar o time de vendas">Estruturar o time de vendas</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="f-trafego">Já investe em tráfego pago?</label>
-              <select class="form-select placeholder" id="f-trafego" name="trafego" required onchange="this.classList.remove('placeholder')">
-                <option value="" disabled selected>Selecione uma opção</option>
-                <option value="Sim, já rodo anúncios">Sim, já rodo anúncios</option>
-                <option value="Não, nunca rodei">Não, nunca rodei</option>
-                <option value="Já rodei mas parei">Já rodei mas parei</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="f-faturamento">Faturamento mensal da empresa</label>
-              <select class="form-select placeholder" id="f-faturamento" name="faturamento" required onchange="this.classList.remove('placeholder')">
-                <option value="" disabled selected>Selecione uma opção</option>
-                <option value="Até R$20 mil">Até R$20 mil</option>
-                <option value="R$20 mil a R$100 mil">R$20 mil a R$100 mil</option>
-                <option value="Acima de R$100 mil">Acima de R$100 mil</option>
-              </select>
-            </div>
-            <button type="submit" class="btn-form-submit">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-              Agendar meu diagnóstico
-            </button>
           </form>
           <p class="form-privacy">Seus dados são usados apenas para entrar em contato com você.</p>
         </div>
@@ -596,6 +643,30 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+function irParaEtapa2() {
+  const nome = document.getElementById('f-nome');
+  const tel = document.getElementById('f-tel');
+  const email = document.getElementById('f-email');
+  if (!nome.value.trim() || !tel.value.trim() || !email.value.trim()) {
+    nome.reportValidity(); return;
+  }
+  document.getElementById('pane-1').classList.remove('active');
+  document.getElementById('pane-2').classList.add('active');
+  document.getElementById('step-num-1').classList.replace('active', 'done');
+  document.getElementById('step-lbl-1').classList.remove('active');
+  document.getElementById('step-num-2').classList.add('active');
+  document.getElementById('step-lbl-2').classList.add('active');
+}
+
+function voltarEtapa1() {
+  document.getElementById('pane-2').classList.remove('active');
+  document.getElementById('pane-1').classList.add('active');
+  document.getElementById('step-num-1').classList.replace('done', 'active');
+  document.getElementById('step-lbl-1').classList.add('active');
+  document.getElementById('step-num-2').classList.remove('active');
+  document.getElementById('step-lbl-2').classList.remove('active');
+}
 
 function enviarLead(e) {
   e.preventDefault();

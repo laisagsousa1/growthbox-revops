@@ -257,7 +257,8 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .hero-inner, .metodo-inner, .form-inner { grid-template-columns: 1fr; }
-  .hero-visual, .metodo-visual { display: none; }
+  .metodo-visual { display: none; }
+  .hero-visual { display: block; }
   .hero-h1 { font-size: 40px; }
   .section-h2 { font-size: 32px; }
   .results-grid { grid-template-columns: 1fr; }
@@ -294,15 +295,12 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
       <a href="#contato">Contato</a>
       <a href="/calendario">Calendário</a>
     </div>
-    <a href="https://wa.me/5531973367476?text=Ola!%20Quero%20agendar%20um%20diagn%C3%B3stico%20com%20a%20GrowthBox" target="_blank" class="nav-cta">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-      Agendar Diagnóstico
-    </a>
+    <a href="#contato" class="nav-cta">Agendar Diagnóstico</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+<section id="contato" class="hero">
   <div class="hero-bg"></div>
   <svg class="hero-lines" viewBox="0 0 600 700" fill="none">
     <path d="M600 0 Q 380 200 280 400 Q 160 600 280 700" stroke="#0EA5E9" stroke-width="1.5" fill="none" opacity=".6"/>
@@ -323,40 +321,35 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
         </h1>
         <p class="hero-sub fade-in">O Método RevOps une estratégia, tráfego pago, sistema e planejamento mensal para transformar sua operação em receita de verdade.</p>
         <div class="hero-ctas fade-in">
-          <a href="https://wa.me/5531973367476?text=Ola!%20Quero%20agendar%20um%20diagn%C3%B3stico%20com%20a%20GrowthBox" target="_blank" class="btn-wa">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-            Agendar Diagnóstico
-          </a>
+          <a href="#contato" class="btn-wa">Agendar Diagnóstico</a>
           <a href="#servicos" class="btn-primary">Ver todos os planos</a>
         </div>
         <p class="hero-note fade-in">Entrega em <span>72 horas</span>. Plano de ação para os próximos 30 dias.</p>
       </div>
       <div class="hero-visual fade-in">
-        <div class="float-badge b1">🚀 <span style="color:#0EA5E9">+67%</span> leads em 90 dias</div>
-        <div class="hero-card">
-          <div class="hc-header">
-            <div class="hc-dot" style="background:#ef4444"></div>
-            <div class="hc-dot" style="background:#eab308"></div>
-            <div class="hc-dot" style="background:#22c55e"></div>
-            <div class="hc-title">GrowthBox Dashboard</div>
-          </div>
-          <div class="hc-grid">
-            <div class="hc-metric"><div class="hc-metric-val" style="color:#0EA5E9">3.2x</div><div class="hc-metric-lbl">ROAS médio</div></div>
-            <div class="hc-metric"><div class="hc-metric-val" style="color:#10B981">+67%</div><div class="hc-metric-lbl">Leads/mês</div></div>
-            <div class="hc-metric"><div class="hc-metric-val" style="color:#F97316">R$28</div><div class="hc-metric-lbl">Custo por lead</div></div>
-            <div class="hc-metric"><div class="hc-metric-val">30d</div><div class="hc-metric-lbl">1º resultado</div></div>
-          </div>
-          <div class="hc-chart">
-            <div class="hc-bar" style="height:30%"></div>
-            <div class="hc-bar" style="height:45%"></div>
-            <div class="hc-bar" style="height:38%"></div>
-            <div class="hc-bar" style="height:62%"></div>
-            <div class="hc-bar" style="height:54%"></div>
-            <div class="hc-bar" style="height:80%"></div>
-            <div class="hc-bar hi" style="height:100%"></div>
-          </div>
+        <div class="form-card">
+          <div class="form-title">Quero agendar meu diagnóstico</div>
+          <div class="form-sub">Preencha os dados abaixo. Nossa equipe entra em contato em até 24h.</div>
+          <form id="leadForm" onsubmit="enviarLead(event)">
+            <div class="form-group">
+              <label class="form-label" for="f-nome">Seu nome</label>
+              <input class="form-input" type="text" id="f-nome" name="nome" placeholder="Ex: Maria Silva" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-tel">Telefone / WhatsApp</label>
+              <input class="form-input" type="tel" id="f-tel" name="telefone" placeholder="(31) 9 9999-9999" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-email">E-mail</label>
+              <input class="form-input" type="email" id="f-email" name="email" placeholder="seu@email.com" required>
+            </div>
+            <button type="submit" class="btn-form-submit">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+              Agendar meu diagnóstico
+            </button>
+          </form>
+          <p class="form-privacy">Seus dados são usados apenas para entrar em contato com você.</p>
         </div>
-        <div class="float-badge b2">📈 ROAS <span style="color:#10B981">3.2x</span> em 60 dias</div>
       </div>
     </div>
   </div>
@@ -420,10 +413,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
             <div class="mc-num" style="background:rgba(16,185,129,.15);color:#10B981">4</div>
             <div><div class="mc-step-text">Otimização Contínua</div><div class="mc-step-sub">Revisão mensal com novas metas</div></div>
           </div>
-          <a href="https://wa.me/5531973367476?text=Ola!%20Quero%20agendar%20um%20diagn%C3%B3stico%20com%20a%20GrowthBox" target="_blank" class="btn-wa" style="width:100%;justify-content:center;margin-top:28px">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-            Agendar Diagnóstico
-          </a>
+          <a href="#contato" class="btn-wa" style="width:100%;justify-content:center;margin-top:28px">Agendar Diagnóstico</a>
         </div>
       </div>
     </div>
@@ -517,62 +507,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
             <div class="price-from">A partir de</div>
             <div><span class="price-val">R$1.997</span> <span class="price-period">/mês</span></div>
           </div>
-          <a href="https://wa.me/5531973367476?text=Ola!%20Tenho%20interesse%20no%20M%C3%A9todo%20RevOps%20Completo%20da%20GrowthBox" target="_blank" class="btn-wa">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-            Quero o RevOps Completo
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FORMULARIO -->
-<section id="contato" class="form-section">
-  <div class="container">
-    <div class="form-inner">
-      <div>
-        <div class="section-tag fade-in"><div class="tag"><div class="tag-dot"></div>Agende agora</div></div>
-        <h2 class="section-h2 fade-in">Preencha e fale com a <span class="accent">GrowthBox</span> no WhatsApp.</h2>
-        <p class="section-sub fade-in">Em menos de 24 horas você recebe o retorno da nossa equipe com os próximos passos.</p>
-        <div class="form-benefits fade-in">
-          <div class="form-benefit">
-            <div class="form-benefit-icon" style="background:rgba(14,165,233,.12)">⚡</div>
-            <div><div class="form-benefit-title">Resposta em até 24h</div><div class="form-benefit-desc">Nossa equipe entra em contato rapidamente para agendar seu diagnóstico.</div></div>
-          </div>
-          <div class="form-benefit">
-            <div class="form-benefit-icon" style="background:rgba(16,185,129,.12)">🎯</div>
-            <div><div class="form-benefit-title">Diagnóstico personalizado</div><div class="form-benefit-desc">Análise real do seu negócio, não um papo genérico de vendas.</div></div>
-          </div>
-          <div class="form-benefit">
-            <div class="form-benefit-icon" style="background:rgba(249,115,22,.12)">📋</div>
-            <div><div class="form-benefit-title">Plano de ação em 72h</div><div class="form-benefit-desc">Depois do diagnóstico, você já sai com o próximo passo claro na mão.</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="fade-in">
-        <div class="form-card">
-          <div class="form-title">Quero agendar meu diagnóstico</div>
-          <div class="form-sub">Preencha os dados abaixo. Vamos te chamar no WhatsApp.</div>
-          <form id="leadForm" onsubmit="enviarLead(event)">
-            <div class="form-group">
-              <label class="form-label" for="f-nome">Seu nome</label>
-              <input class="form-input" type="text" id="f-nome" name="nome" placeholder="Ex: Maria Silva" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="f-tel">Telefone / WhatsApp</label>
-              <input class="form-input" type="tel" id="f-tel" name="telefone" placeholder="(31) 9 9999-9999" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="f-email">E-mail</label>
-              <input class="form-input" type="email" id="f-email" name="email" placeholder="seu@email.com" required>
-            </div>
-            <button type="submit" class="btn-form-submit">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-              Agendar meu diagnóstico
-            </button>
-          </form>
-          <p class="form-privacy">Seus dados são usados apenas para entrar em contato com você.</p>
+          <a href="#contato" class="btn-wa">Quero o RevOps Completo</a>
         </div>
       </div>
     </div>
@@ -587,10 +522,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
     <h2 class="section-h2 fade-in" style="text-align:center;max-width:700px;margin:0 auto 20px">Pronto para fazer sua empresa <span class="accent">crescer de verdade?</span></h2>
     <p class="section-sub fade-in" style="text-align:center;margin:0 auto 48px">Comece com a Auditoria RevOps por R$197 e receba um plano de ação completo em 72 horas.</p>
     <div style="display:flex;justify-content:center" class="fade-in">
-      <a href="https://wa.me/5531973367476?text=Ola!%20Quero%20agendar%20um%20diagn%C3%B3stico%20com%20a%20GrowthBox" target="_blank" class="btn-wa" style="font-size:18px;padding:22px 48px">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-        Agendar Diagnóstico
-      </a>
+      <a href="#contato" class="btn-wa" style="font-size:18px;padding:22px 48px">Agendar Diagnóstico</a>
     </div>
     <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:20px">Entrega em até 72 horas nos dias úteis</p>
   </div>

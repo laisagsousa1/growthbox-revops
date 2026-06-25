@@ -374,12 +374,17 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
           <div class="form-steps">
             <div class="form-step-item">
               <div class="form-step-num active" id="step-num-1">1</div>
-              <div class="form-step-label active" id="step-lbl-1">Seus dados</div>
+              <div class="form-step-label active" id="step-lbl-1">Contato</div>
             </div>
             <div class="form-step-divider"></div>
             <div class="form-step-item">
               <div class="form-step-num" id="step-num-2">2</div>
-              <div class="form-step-label" id="step-lbl-2">Seu negócio</div>
+              <div class="form-step-label" id="step-lbl-2">Negócio</div>
+            </div>
+            <div class="form-step-divider"></div>
+            <div class="form-step-item">
+              <div class="form-step-num" id="step-num-3">3</div>
+              <div class="form-step-label" id="step-lbl-3">Situação</div>
             </div>
           </div>
           <form id="leadForm" onsubmit="enviarLead(event)">
@@ -396,12 +401,51 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
                 <label class="form-label" for="f-email">E-mail</label>
                 <input class="form-input" type="email" id="f-email" name="email" placeholder="seu@email.com" required>
               </div>
-              <button type="button" class="btn-next" onclick="irParaEtapa2()">
+              <button type="button" class="btn-next" onclick="irPara(2)">
                 Continuar
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
             </div>
             <div class="form-pane" id="pane-2">
+              <div class="form-group">
+                <label class="form-label" for="f-nicho">Qual o seu nicho / segmento?</label>
+                <input class="form-input" type="text" id="f-nicho" name="nicho" placeholder="Ex: Clínica odontológica, e-commerce, consultoria..." required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-tipo">Tipo de negócio</label>
+                <select class="form-select placeholder" id="f-tipo" name="tipo" required onchange="this.classList.remove('placeholder')">
+                  <option value="" disabled selected>Selecione uma opção</option>
+                  <option value="B2B — vendo para empresas">B2B — vendo para empresas</option>
+                  <option value="B2C — vendo para pessoas">B2C — vendo para pessoas</option>
+                  <option value="Ambos">Ambos</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-ticket">Ticket médio por cliente</label>
+                <select class="form-select placeholder" id="f-ticket" name="ticket" required onchange="this.classList.remove('placeholder')">
+                  <option value="" disabled selected>Selecione uma opção</option>
+                  <option value="Até R$500">Até R$500</option>
+                  <option value="R$500 a R$2.000">R$500 a R$2.000</option>
+                  <option value="R$2.000 a R$10.000">R$2.000 a R$10.000</option>
+                  <option value="Acima de R$10.000">Acima de R$10.000</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-faturamento">Faturamento mensal</label>
+                <select class="form-select placeholder" id="f-faturamento" name="faturamento" required onchange="this.classList.remove('placeholder')">
+                  <option value="" disabled selected>Selecione uma opção</option>
+                  <option value="Até R$20 mil">Até R$20 mil</option>
+                  <option value="R$20 mil a R$100 mil">R$20 mil a R$100 mil</option>
+                  <option value="Acima de R$100 mil">Acima de R$100 mil</option>
+                </select>
+              </div>
+              <button type="button" class="btn-next" onclick="irPara(3)">
+                Continuar
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <button type="button" class="btn-back" onclick="irPara(1)">&#8592; Voltar</button>
+            </div>
+            <div class="form-pane" id="pane-3">
               <div class="form-group">
                 <label class="form-label" for="f-desafio">Principal desafio hoje</label>
                 <select class="form-select placeholder" id="f-desafio" name="desafio" required onchange="this.classList.remove('placeholder')">
@@ -413,6 +457,17 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
                 </select>
               </div>
               <div class="form-group">
+                <label class="form-label" for="f-captacao">Como capta clientes hoje?</label>
+                <select class="form-select placeholder" id="f-captacao" name="captacao" required onchange="this.classList.remove('placeholder')">
+                  <option value="" disabled selected>Selecione uma opção</option>
+                  <option value="Indicação">Indicação</option>
+                  <option value="Redes sociais (orgânico)">Redes sociais (orgânico)</option>
+                  <option value="Tráfego pago">Tráfego pago</option>
+                  <option value="Prospecção ativa">Prospecção ativa</option>
+                  <option value="Vários canais">Vários canais</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label class="form-label" for="f-trafego">Já investe em tráfego pago?</label>
                 <select class="form-select placeholder" id="f-trafego" name="trafego" required onchange="this.classList.remove('placeholder')">
                   <option value="" disabled selected>Selecione uma opção</option>
@@ -421,20 +476,11 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
                   <option value="Já rodei mas parei">Já rodei mas parei</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label class="form-label" for="f-faturamento">Faturamento mensal da empresa</label>
-                <select class="form-select placeholder" id="f-faturamento" name="faturamento" required onchange="this.classList.remove('placeholder')">
-                  <option value="" disabled selected>Selecione uma opção</option>
-                  <option value="Até R$20 mil">Até R$20 mil</option>
-                  <option value="R$20 mil a R$100 mil">R$20 mil a R$100 mil</option>
-                  <option value="Acima de R$100 mil">Acima de R$100 mil</option>
-                </select>
-              </div>
               <button type="submit" class="btn-form-submit">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
                 Agendar meu diagnóstico
               </button>
-              <button type="button" class="btn-back" onclick="voltarEtapa1()">&#8592; Voltar</button>
+              <button type="button" class="btn-back" onclick="irPara(2)">&#8592; Voltar</button>
             </div>
           </form>
           <p class="form-privacy">Seus dados são usados apenas para entrar em contato com você.</p>
@@ -644,41 +690,31 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-function irParaEtapa2() {
-  const nome = document.getElementById('f-nome');
-  const tel = document.getElementById('f-tel');
-  const email = document.getElementById('f-email');
-  if (!nome.value.trim() || !tel.value.trim() || !email.value.trim()) {
-    nome.reportValidity(); return;
+function irPara(etapa) {
+  const paneAtual = document.querySelector('.form-pane.active');
+  const inputs = paneAtual.querySelectorAll('input[required], select[required]');
+  for (const el of inputs) {
+    if (!el.value.trim()) { el.reportValidity(); return; }
   }
-  document.getElementById('pane-1').classList.remove('active');
-  document.getElementById('pane-2').classList.add('active');
-  document.getElementById('step-num-1').classList.replace('active', 'done');
-  document.getElementById('step-lbl-1').classList.remove('active');
-  document.getElementById('step-num-2').classList.add('active');
-  document.getElementById('step-lbl-2').classList.add('active');
-}
-
-function voltarEtapa1() {
-  document.getElementById('pane-2').classList.remove('active');
-  document.getElementById('pane-1').classList.add('active');
-  document.getElementById('step-num-1').classList.replace('done', 'active');
-  document.getElementById('step-lbl-1').classList.add('active');
-  document.getElementById('step-num-2').classList.remove('active');
-  document.getElementById('step-lbl-2').classList.remove('active');
+  const total = 3;
+  for (let i = 1; i <= total; i++) {
+    const num = document.getElementById('step-num-' + i);
+    const lbl = document.getElementById('step-lbl-' + i);
+    const pane = document.getElementById('pane-' + i);
+    num.className = 'form-step-num' + (i === etapa ? ' active' : i < etapa ? ' done' : '');
+    lbl.className = 'form-step-label' + (i === etapa ? ' active' : '');
+    pane.className = 'form-pane' + (i === etapa ? ' active' : '');
+  }
 }
 
 function enviarLead(e) {
   e.preventDefault();
-  const nome = document.getElementById('f-nome').value.trim();
-  const tel = document.getElementById('f-tel').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const desafio = document.getElementById('f-desafio').value;
-  const trafego = document.getElementById('f-trafego').value;
-  const faturamento = document.getElementById('f-faturamento').value;
-  const msg = `Olá! Quero agendar um diagnóstico com a GrowthBox.\n\nNome: ${nome}\nTelefone: ${tel}\nE-mail: ${email}\n\nPrincipal desafio: ${desafio}\nTráfego pago: ${trafego}\nFaturamento mensal: ${faturamento}`;
-  const url = `https://wa.me/5531973367476?text=${encodeURIComponent(msg)}`;
-  window.open(url, '_blank');
+  const v = id => document.getElementById(id).value.trim();
+  const msg = `Olá! Quero agendar um diagnóstico com a GrowthBox.\n\n` +
+    `Nome: ${v('f-nome')}\nTelefone: ${v('f-tel')}\nE-mail: ${v('f-email')}\n\n` +
+    `Nicho: ${v('f-nicho')}\nTipo de negócio: ${v('f-tipo')}\nTicket médio: ${v('f-ticket')}\nFaturamento mensal: ${v('f-faturamento')}\n\n` +
+    `Principal desafio: ${v('f-desafio')}\nComo capta clientes: ${v('f-captacao')}\nTráfego pago: ${v('f-trafego')}`;
+  window.open(`https://wa.me/5531973367476?text=${encodeURIComponent(msg)}`, '_blank');
 }
 </script>
 </body>

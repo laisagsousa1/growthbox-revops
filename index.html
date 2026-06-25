@@ -709,11 +709,8 @@ function irPara(etapa) {
 
 function enviarLead(e) {
   e.preventDefault();
-  const v = id => document.getElementById(id).value.trim();
-  const msg = `Olá! Quero agendar um diagnóstico com a GrowthBox.\n\n` +
-    `Nome: ${v('f-nome')}\nTelefone: ${v('f-tel')}\nE-mail: ${v('f-email')}\n\n` +
-    `Nicho: ${v('f-nicho')}\nTipo de negócio: ${v('f-tipo')}\nTicket médio: ${v('f-ticket')}\nFaturamento mensal: ${v('f-faturamento')}\n\n` +
-    `Principal desafio: ${v('f-desafio')}\nComo capta clientes: ${v('f-captacao')}\nTráfego pago: ${v('f-trafego')}`;
+  const nome = document.getElementById('f-nome').value.trim();
+  const msg = `Olá! Me chamo ${nome} e quero agendar um diagnóstico com a GrowthBox.`;
   window.open(`https://wa.me/5531973367476?text=${encodeURIComponent(msg)}`, '_blank');
 }
 </script>

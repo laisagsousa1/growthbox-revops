@@ -438,44 +438,77 @@ Me fala o que acha! 🤝</div>
       <label class="form-label">E-mail</label>
       <input class="form-input" id="f-email" placeholder="email@exemplo.com">
     </div>
-    <div id="form-dados-site" style="display:none">
-      <div style="font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px;padding-top:16px;border-top:1px solid var(--border)">Dados do formulário</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Nicho</label>
-          <input class="form-input" id="f-nicho" readonly style="opacity:.7">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tipo</label>
-          <input class="form-input" id="f-tipo" readonly style="opacity:.7">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Ticket médio</label>
-          <input class="form-input" id="f-ticket" readonly style="opacity:.7">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Faturamento</label>
-          <input class="form-input" id="f-faturamento" readonly style="opacity:.7">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Principal desafio</label>
-          <input class="form-input" id="f-desafio" readonly style="opacity:.7">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Como capta clientes</label>
-          <input class="form-input" id="f-captacao" readonly style="opacity:.7">
-        </div>
+    <div style="font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px;padding-top:16px;border-top:1px solid var(--border)">Sobre o negócio</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nicho / Segmento</label>
+        <input class="form-input" id="f-nicho" placeholder="Ex: Clínica, e-commerce...">
       </div>
       <div class="form-group">
-        <label class="form-label">Tráfego pago</label>
-        <input class="form-input" id="f-trafego" readonly style="opacity:.7">
+        <label class="form-label">Tipo de negócio</label>
+        <select class="form-select" id="f-tipo">
+          <option value="">Selecione</option>
+          <option value="B2B — vendo para empresas">B2B — vendo para empresas</option>
+          <option value="B2C — vendo para pessoas">B2C — vendo para pessoas</option>
+          <option value="Ambos">Ambos</option>
+        </select>
       </div>
     </div>
-    <div class="form-group" style="margin-top:16px">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Ticket médio</label>
+        <select class="form-select" id="f-ticket">
+          <option value="">Selecione</option>
+          <option value="Até R$500">Até R$500</option>
+          <option value="R$500 a R$2.000">R$500 a R$2.000</option>
+          <option value="R$2.000 a R$10.000">R$2.000 a R$10.000</option>
+          <option value="Acima de R$10.000">Acima de R$10.000</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Faturamento mensal</label>
+        <select class="form-select" id="f-faturamento">
+          <option value="">Selecione</option>
+          <option value="Até R$20 mil">Até R$20 mil</option>
+          <option value="R$20 mil a R$100 mil">R$20 mil a R$100 mil</option>
+          <option value="Acima de R$100 mil">Acima de R$100 mil</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Principal desafio</label>
+        <select class="form-select" id="f-desafio">
+          <option value="">Selecione</option>
+          <option value="Gerar mais leads">Gerar mais leads</option>
+          <option value="Fechar mais clientes">Fechar mais clientes</option>
+          <option value="Escalar o faturamento">Escalar o faturamento</option>
+          <option value="Estruturar o time de vendas">Estruturar o time de vendas</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Como capta clientes</label>
+        <select class="form-select" id="f-captacao">
+          <option value="">Selecione</option>
+          <option value="Indicação">Indicação</option>
+          <option value="Redes sociais (orgânico)">Redes sociais (orgânico)</option>
+          <option value="Tráfego pago">Tráfego pago</option>
+          <option value="Prospecção ativa">Prospecção ativa</option>
+          <option value="Vários canais">Vários canais</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tráfego pago</label>
+      <select class="form-select" id="f-trafego">
+        <option value="">Selecione</option>
+        <option value="Sim, já rodo anúncios">Sim, já rodo anúncios</option>
+        <option value="Não, nunca rodei">Não, nunca rodei</option>
+        <option value="Já rodei mas parei">Já rodei mas parei</option>
+      </select>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px;padding-top:16px;border-top:1px solid var(--border)">Gestão</div>
+    <div class="form-group">
       <label class="form-label">Status</label>
       <select class="form-select" id="f-status">
         <option value="novo">Novo</option>
@@ -657,33 +690,24 @@ function toggleDetail(id) {
 function openModal(id = null) {
   editingId = id;
   document.getElementById('modal-title').textContent = id ? 'Editar Lead' : 'Novo Lead';
-  const dadosSite = document.getElementById('form-dados-site');
+  const fields = ['f-nome','f-tel','f-email','f-nicho','f-tipo','f-ticket','f-faturamento','f-desafio','f-captacao','f-trafego','f-obs'];
   if (id) {
     const l = leads.find(x => x.id === id);
     document.getElementById('f-nome').value = l.nome || '';
     document.getElementById('f-tel').value = l.telefone || '';
     document.getElementById('f-email').value = l.email || '';
+    document.getElementById('f-nicho').value = l.nicho || '';
+    document.getElementById('f-tipo').value = l.tipo || '';
+    document.getElementById('f-ticket').value = l.ticket || '';
+    document.getElementById('f-faturamento').value = l.faturamento || '';
+    document.getElementById('f-desafio').value = l.desafio || '';
+    document.getElementById('f-captacao').value = l.captacao || '';
+    document.getElementById('f-trafego').value = l.trafego || '';
     document.getElementById('f-status').value = l.status || 'novo';
     document.getElementById('f-obs').value = l.obs || '';
-    if (l.origem === 'site') {
-      dadosSite.style.display = 'block';
-      document.getElementById('f-nicho').value = l.nicho || '';
-      document.getElementById('f-tipo').value = l.tipo || '';
-      document.getElementById('f-ticket').value = l.ticket || '';
-      document.getElementById('f-faturamento').value = l.faturamento || '';
-      document.getElementById('f-desafio').value = l.desafio || '';
-      document.getElementById('f-captacao').value = l.captacao || '';
-      document.getElementById('f-trafego').value = l.trafego || '';
-    } else {
-      dadosSite.style.display = 'none';
-    }
   } else {
-    document.getElementById('f-nome').value = '';
-    document.getElementById('f-tel').value = '';
-    document.getElementById('f-email').value = '';
+    fields.forEach(f => document.getElementById(f).value = '');
     document.getElementById('f-status').value = 'novo';
-    document.getElementById('f-obs').value = '';
-    dadosSite.style.display = 'none';
   }
   document.getElementById('modal-overlay').classList.add('open');
 }
@@ -697,12 +721,15 @@ async function saveLead() {
   const nome = document.getElementById('f-nome').value.trim();
   if (!nome) { alert('Informe o nome'); return; }
 
+  const g = id => document.getElementById(id).value.trim();
   const data = {
     nome,
-    telefone: document.getElementById('f-tel').value.trim(),
-    email: document.getElementById('f-email').value.trim(),
+    telefone: g('f-tel'), email: g('f-email'),
+    nicho: g('f-nicho'), tipo: g('f-tipo'),
+    ticket: g('f-ticket'), faturamento: g('f-faturamento'),
+    desafio: g('f-desafio'), captacao: g('f-captacao'), trafego: g('f-trafego'),
     status: document.getElementById('f-status').value,
-    obs: document.getElementById('f-obs').value.trim(),
+    obs: g('f-obs'),
     updated_at: new Date().toISOString()
   };
 

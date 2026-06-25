@@ -684,7 +684,14 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://drqbllluooaxcplrrecj.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRycWJsbGx1b29heGNwbHJyZWNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MjAyNTUsImV4cCI6MjA5Nzk5NjI1NX0.Ulqt7ANYBcBLAO1FPknSNZE2gjQQo7eXcid8H3OnmVA'
+);
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
@@ -707,12 +714,11 @@ function irPara(etapa) {
   }
 }
 
-function enviarLead(e) {
+async function enviarLead(e) {
   e.preventDefault();
   const v = id => document.getElementById(id).value.trim();
 
   const lead = {
-    id: Date.now().toString(),
     nome: v('f-nome'),
     telefone: v('f-tel'),
     email: v('f-email'),
@@ -725,12 +731,10 @@ function enviarLead(e) {
     trafego: v('f-trafego'),
     status: 'novo',
     origem: 'site',
-    obs: '',
-    created_at: new Date().toISOString()
+    obs: ''
   };
-  const leads = JSON.parse(localStorage.getItem('growthbox_leads') || '[]');
-  leads.unshift(lead);
-  localStorage.setItem('growthbox_leads', JSON.stringify(leads));
+
+  await sb.from('leads').insert(lead);
 
   const msg = `Olá! Me chamo ${lead.nome} e quero agendar um diagnóstico com a GrowthBox.`;
   window.open(`https://wa.me/5531973367476?text=${encodeURIComponent(msg)}`, '_blank');

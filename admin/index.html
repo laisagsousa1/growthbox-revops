@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GrowthBox Admin — CRM</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -498,8 +499,15 @@ Me fala o que acha! 🤝</div>
 <div class="toast" id="toast"></div>
 
 <script>
+// ── SUPABASE ──
+const { createClient } = supabase;
+const sb = createClient(
+  'https://drqbllluooaxcplrrecj.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRycWJsbGx1b29heGNwbHJyZWNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MjAyNTUsImV4cCI6MjA5Nzk5NjI1NX0.Ulqt7ANYBcBLAO1FPknSNZE2gjQQo7eXcid8H3OnmVA'
+);
+
 // ── ESTADO ──
-let leads = JSON.parse(localStorage.getItem('growthbox_leads') || '[]');
+let leads = [];
 let editingId = null;
 
 const STATUS_LABELS = {
@@ -523,9 +531,11 @@ function showPage(id, el) {
   if (id === 'leads') renderTable();
 }
 
-// ── SALVAR ──
-function save() {
-  localStorage.setItem('growthbox_leads', JSON.stringify(leads));
+// ── CARREGAR LEADS ──
+async function loadLeads() {
+  const { data, error } = await sb.from('leads').select('*').order('created_at', { ascending: false });
+  if (error) { console.error(error); showToast('Erro ao carregar leads'); return; }
+  leads = data || [];
 }
 
 // ── DASHBOARD ──
@@ -652,9 +662,9 @@ function closeModal() {
   editingId = null;
 }
 
-function saveLead() {
+async function saveLead() {
   const nome = document.getElementById('f-nome').value.trim();
-  if (!nome) { alert('Informe o nome da oficina'); return; }
+  if (!nome) { alert('Informe o nome'); return; }
 
   const data = {
     nome,
@@ -666,86 +676,47 @@ function saveLead() {
   };
 
   if (editingId) {
-    const idx = leads.findIndex(l => l.id === editingId);
-    leads[idx] = { ...leads[idx], ...data };
+    const { error } = await sb.from('leads').update(data).eq('id', editingId);
+    if (error) { console.error(error); showToast('Erro ao salvar'); return; }
   } else {
-    data.id = Date.now().toString();
-    data.created_at = new Date().toISOString();
-    leads.unshift(data);
+    data.origem = 'manual';
+    const { error } = await sb.from('leads').insert(data);
+    if (error) { console.error(error); showToast('Erro ao salvar'); return; }
   }
 
-  save();
+  await loadLeads();
   closeModal();
   renderTable();
   renderDashboard();
   showToast(editingId ? 'Lead atualizado!' : 'Lead adicionado!');
 }
 
-function deleteLead(id) {
+async function deleteLead(id) {
   if (!confirm('Excluir este lead?')) return;
+  const { error } = await sb.from('leads').delete().eq('id', id);
+  if (error) { console.error(error); showToast('Erro ao excluir'); return; }
   leads = leads.filter(l => l.id !== id);
-  save();
   renderTable();
   renderDashboard();
   showToast('Lead removido');
 }
 
-// ── EXPORT / IMPORT ──
+// ── EXPORT ──
 function exportCSV() {
-  const headers = ['Nome', 'Telefone', 'Bairro', 'Cidade', 'Endereço', 'Status', 'Observações', 'Cadastrado em'];
+  const headers = ['Nome', 'Telefone', 'Email', 'Nicho', 'Tipo', 'Ticket', 'Faturamento', 'Desafio', 'Captação', 'Tráfego', 'Status', 'Origem', 'Observações', 'Cadastrado em'];
   const rows = leads.map(l => [
-    l.nome, l.telefone, l.bairro, l.cidade, l.endereco,
-    STATUS_LABELS[l.status] || l.status,
+    l.nome, l.telefone, l.email, l.nicho, l.tipo, l.ticket,
+    l.faturamento, l.desafio, l.captacao, l.trafego,
+    STATUS_LABELS[l.status] || l.status, l.origem || 'manual',
     l.obs, l.created_at ? l.created_at.slice(0,10) : ''
   ].map(v => `"${(v||'').replace(/"/g,'""')}"`));
   const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
   const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `growthbox-oficinas-${new Date().toISOString().slice(0,10)}.csv`;
+  a.download = `growthbox-leads-${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
   showToast('Planilha exportada!');
-}
-function exportLeads() {
-  const json = JSON.stringify(leads, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `growthbox-leads-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-}
-
-function importCSV(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const lines = ev.target.result.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-    let added = 0;
-    for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split(',');
-      if (!cols[0]) continue;
-      const row = {};
-      headers.forEach((h, idx) => row[h] = (cols[idx]||'').trim().replace(/"/g,''));
-      leads.unshift({
-        id: Date.now().toString() + i,
-        nome: row.nome || row.name || row['nome da oficina'] || `Lead ${i}`,
-        telefone: row.telefone || row.phone || row.tel || '',
-        bairro: row.bairro || '',
-        cidade: row.cidade || 'Ipatinga',
-        endereco: row.endereco || row.endereço || '',
-        status: 'novo',
-        obs: '',
-        created_at: new Date().toISOString()
-      });
-      added++;
-    }
-    save(); renderTable(); renderDashboard();
-    showToast(`${added} leads importados!`);
-  };
-  reader.readAsText(file);
-  e.target.value = '';
 }
 
 // ── MENSAGENS ──
@@ -779,7 +750,7 @@ function showToast(msg) {
 }
 
 // ── INIT ──
-renderDashboard();
+loadLeads().then(() => { renderDashboard(); renderTable(); });
 </script>
 </body>
 </html>

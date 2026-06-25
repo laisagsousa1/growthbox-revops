@@ -231,6 +231,20 @@ section { padding: 100px 0; }
   box-shadow: 0 8px 32px rgba(37,211,102,.25);
 }
 .btn-form-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,211,102,.35); }
+.form-select {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 18px; font-size: 15px; font-weight: 500;
+  color: var(--text); font-family: 'Inter', sans-serif;
+  transition: border-color .2s, box-shadow .2s; outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+}
+.form-select:focus { border-color: rgba(14,165,233,.5); box-shadow: 0 0 0 3px rgba(14,165,233,.08); }
+.form-select option { background: #0D1829; color: var(--text); }
+.form-select.placeholder { color: var(--muted); }
 .form-privacy { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
 .form-benefits { display: flex; flex-direction: column; gap: 20px; margin-top: 40px; }
 .form-benefit { display: flex; align-items: flex-start; gap: 16px; }
@@ -342,6 +356,34 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
             <div class="form-group">
               <label class="form-label" for="f-email">E-mail</label>
               <input class="form-input" type="email" id="f-email" name="email" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-desafio">Principal desafio hoje</label>
+              <select class="form-select placeholder" id="f-desafio" name="desafio" required onchange="this.classList.remove('placeholder')">
+                <option value="" disabled selected>Selecione uma opção</option>
+                <option value="Gerar mais leads">Gerar mais leads</option>
+                <option value="Fechar mais clientes">Fechar mais clientes</option>
+                <option value="Escalar o faturamento">Escalar o faturamento</option>
+                <option value="Estruturar o time de vendas">Estruturar o time de vendas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-trafego">Já investe em tráfego pago?</label>
+              <select class="form-select placeholder" id="f-trafego" name="trafego" required onchange="this.classList.remove('placeholder')">
+                <option value="" disabled selected>Selecione uma opção</option>
+                <option value="Sim, já rodo anúncios">Sim, já rodo anúncios</option>
+                <option value="Não, nunca rodei">Não, nunca rodei</option>
+                <option value="Já rodei mas parei">Já rodei mas parei</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-faturamento">Faturamento mensal da empresa</label>
+              <select class="form-select placeholder" id="f-faturamento" name="faturamento" required onchange="this.classList.remove('placeholder')">
+                <option value="" disabled selected>Selecione uma opção</option>
+                <option value="Até R$20 mil">Até R$20 mil</option>
+                <option value="R$20 mil a R$100 mil">R$20 mil a R$100 mil</option>
+                <option value="Acima de R$100 mil">Acima de R$100 mil</option>
+              </select>
             </div>
             <button type="submit" class="btn-form-submit">
               <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.48a.75.75 0 00.917.953l5.84-1.53A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.73 9.73 0 01-4.951-1.354l-.355-.211-3.668.962.977-3.565-.232-.368A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
@@ -560,7 +602,10 @@ function enviarLead(e) {
   const nome = document.getElementById('f-nome').value.trim();
   const tel = document.getElementById('f-tel').value.trim();
   const email = document.getElementById('f-email').value.trim();
-  const msg = `Olá! Quero agendar um diagnóstico com a GrowthBox.\n\nNome: ${nome}\nTelefone: ${tel}\nE-mail: ${email}`;
+  const desafio = document.getElementById('f-desafio').value;
+  const trafego = document.getElementById('f-trafego').value;
+  const faturamento = document.getElementById('f-faturamento').value;
+  const msg = `Olá! Quero agendar um diagnóstico com a GrowthBox.\n\nNome: ${nome}\nTelefone: ${tel}\nE-mail: ${email}\n\nPrincipal desafio: ${desafio}\nTráfego pago: ${trafego}\nFaturamento mensal: ${faturamento}`;
   const url = `https://wa.me/5531973367476?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
 }

@@ -674,6 +674,16 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+document.getElementById('f-tel').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+  if (v.length <= 10) {
+    v = v.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+  } else {
+    v = v.replace(/^(\d{2})(\d{1})(\d{4})(\d{0,4})/, '($1) $2 $3-$4');
+  }
+  e.target.value = v;
+});
+
 function irPara(etapa) {
   const paneAtual = document.querySelector('.form-pane.active');
   const inputs = paneAtual.querySelectorAll('input[required], select[required]');

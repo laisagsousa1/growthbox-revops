@@ -344,9 +344,7 @@ tr:hover td { background: var(--surface2); }
     <div class="nav-item" onclick="showPage('funil', this)">
       <span class="icon">🎯</span> Funil
     </div>
-    <div class="nav-item" onclick="showPage('mensagens', this)">
-      <span class="icon">💬</span> Mensagens
-    </div>
+
   </nav>
   <div class="sidebar-footer">
     Oficinas • Ipatinga MG
@@ -434,86 +432,6 @@ tr:hover td { background: var(--surface2); }
     <div class="kanban-wrap" id="kanban-board"></div>
   </div>
 
-  <!-- MENSAGENS -->
-  <div class="page" id="page-mensagens">
-    <div class="msg-grid">
-
-      <div class="msg-card">
-        <div class="msg-card-tag">Abordagem Inicial</div>
-        <div class="msg-card-title">Mensagem 1 — Primeira Vez</div>
-        <div class="msg-card-body" id="msg1">Olá, tudo bem? 👋
-
-Meu nome é Laisa, sou da GrowthBox — agência de marketing focada em oficinas mecânicas.
-
-Vi que a [NOME DA OFICINA] fica aqui em Ipatinga e queria te perguntar: você já usa Google Ads para atrair clientes novos?
-
-A gente atende oficinas na região e os resultados têm sido bem consistentes — mais agendamentos, clientes chegando já buscando o serviço.
-
-Posso te mostrar como funcionaria pra você em 10 minutinhos?</div>
-        <div class="msg-card-footer">
-          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg1')">📋 Copiar</button>
-          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg1')">✏️ Editar</button>
-        </div>
-      </div>
-
-      <div class="msg-card">
-        <div class="msg-card-tag">Follow-up</div>
-        <div class="msg-card-title">Mensagem 2 — Retorno</div>
-        <div class="msg-card-body" id="msg2">Oi [NOME], passando pra dar um oi 😊
-
-Te mandei uma mensagem semana passada sobre Google Ads para a [NOME DA OFICINA].
-
-Sei que é corrido o dia a dia de oficina, então deixa eu ser direto: a gente consegue colocar sua oficina nos primeiros resultados do Google quando alguém pesquisa "oficina mecânica em Ipatinga".
-
-Pagamento só quando o cliente clica. Sem fidelidade.
-
-Vale uma conversa rápida?</div>
-        <div class="msg-card-footer">
-          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg2')">📋 Copiar</button>
-          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg2')">✏️ Editar</button>
-        </div>
-      </div>
-
-      <div class="msg-card">
-        <div class="msg-card-tag">Proposta</div>
-        <div class="msg-card-title">Mensagem 3 — Envio de Proposta</div>
-        <div class="msg-card-body" id="msg3">Oi [NOME]!
-
-Conforme conversamos, segue o resumo do que a GrowthBox faria pela [NOME DA OFICINA]:
-
-✅ Google Ads gerenciado — aparecer quando cliente pesquisa serviço
-✅ Sistema de agendamento online
-✅ Relatório mensal de resultados
-
-Investimento a partir de R$497/mês (tudo incluso, sem taxa de setup).
-
-Posso te mandar uma proposta formal ou agendar uma call de 20 minutos pra tirar dúvidas?</div>
-        <div class="msg-card-footer">
-          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg3')">📋 Copiar</button>
-          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg3')">✏️ Editar</button>
-        </div>
-      </div>
-
-      <div class="msg-card">
-        <div class="msg-card-tag">Fechamento</div>
-        <div class="msg-card-title">Mensagem 4 — Urgência</div>
-        <div class="msg-card-body" id="msg4">Oi [NOME], tudo bem?
-
-Só pra fechar: estamos com 1 vaga disponível para oficinas em Ipatinga este mês.
-
-A gente trabalha com exclusividade de área — ou seja, não atendemos duas oficinas concorrentes na mesma região.
-
-Se tiver interesse, posso garantir sua vaga agora. Caso contrário, prosseguimos com outra oficina da região.
-
-Me fala o que acha! 🤝</div>
-        <div class="msg-card-footer">
-          <button class="btn btn-ghost btn-sm" onclick="copyMsg('msg4')">📋 Copiar</button>
-          <button class="btn btn-ghost btn-sm" onclick="editMsg('msg4')">✏️ Editar</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
 
 </div>
 
@@ -733,7 +651,7 @@ function showPage(id, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   if (el) el.classList.add('active');
-  const titles = { dashboard: 'Dashboard', leads: 'Leads', funil: 'Funil de Vendas', mensagens: 'Templates de Mensagem' };
+  const titles = { dashboard: 'Dashboard', leads: 'Leads', funil: 'Funil de Vendas' };
   document.getElementById('page-title').textContent = titles[id] || id;
   if (id === 'dashboard') renderDashboard();
   if (id === 'leads') renderTable();

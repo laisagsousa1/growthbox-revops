@@ -220,6 +220,69 @@ tr:hover td { background: var(--surface2); }
 .empty-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
 .empty-desc { font-size: 14px; color: var(--text-dim); }
 
+/* ── DRAWER ── */
+.drawer-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:150; }
+.drawer-overlay.open { display:block; }
+.drawer {
+  position:fixed; top:0; right:-580px; bottom:0; width:560px;
+  background:var(--surface); border-left:1px solid var(--border);
+  z-index:160; transition:right .3s ease; overflow-y:auto;
+  display:flex; flex-direction:column;
+}
+.drawer.open { right:0; }
+.drawer-header {
+  padding:24px 28px; border-bottom:1px solid var(--border);
+  display:flex; align-items:flex-start; justify-content:space-between;
+  position:sticky; top:0; background:var(--surface); z-index:10;
+}
+.drawer-nome { font-size:22px; font-weight:900; margin-bottom:8px; }
+.drawer-meta { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.drawer-close {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:8px; width:34px; height:34px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:20px; color:var(--text-dim); flex-shrink:0;
+}
+.drawer-body { padding:24px 28px; flex:1; display:flex; flex-direction:column; gap:24px; }
+.drawer-section-title {
+  font-size:10px; font-weight:700; color:var(--cyan);
+  text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px;
+}
+.drawer-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.drawer-field-label { font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+.drawer-field-val { font-size:14px; font-weight:500; color:var(--text); }
+.drawer-contact-btns { display:flex; gap:10px; margin-top:14px; }
+.drawer-section { border-top:1px solid var(--border); padding-top:20px; }
+.hist-timeline { display:flex; flex-direction:column; gap:2px; margin-bottom:20px; }
+.hist-item {
+  display:flex; gap:14px; padding:12px 14px; border-radius:10px;
+  transition:background .15s; position:relative;
+}
+.hist-item:hover { background:var(--surface2); }
+.hist-icon { font-size:18px; flex-shrink:0; width:28px; text-align:center; margin-top:1px; }
+.hist-content { flex:1; min-width:0; }
+.hist-tipo { font-size:12px; font-weight:700; color:var(--cyan); margin-bottom:3px; }
+.hist-desc { font-size:13px; color:var(--text); line-height:1.5; }
+.hist-date { font-size:11px; color:var(--text-dim); margin-top:4px; }
+.hist-del { opacity:0; font-size:12px; color:var(--red); cursor:pointer; transition:opacity .15s; flex-shrink:0; align-self:flex-start; padding:4px; }
+.hist-item:hover .hist-del { opacity:1; }
+.hist-empty { text-align:center; padding:28px; color:var(--text-dim); font-size:13px; }
+.add-hist { background:var(--surface2); border-radius:14px; padding:18px; }
+.add-hist-title { font-size:12px; font-weight:700; color:var(--text-dim); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+.hist-tipos { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.hist-tipo-btn {
+  padding:6px 14px; border-radius:100px; font-size:12px; font-weight:700;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text-dim); cursor:pointer; transition:all .15s;
+}
+.hist-tipo-btn.selected { background:var(--cyan-dim); border-color:var(--cyan); color:var(--cyan); }
+.status-select-drawer {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:8px; padding:9px 14px; font-size:14px; font-weight:600;
+  color:var(--text); font-family:'Inter',sans-serif; cursor:pointer; width:100%;
+}
+.status-select-drawer:focus { outline:none; border-color:var(--cyan); }
+
 /* ── TOAST ── */
 .toast {
   position: fixed; bottom: 24px; right: 24px;
@@ -414,6 +477,79 @@ Me fala o que acha! 🤝</div>
     </div>
   </div>
 
+</div>
+
+<!-- DRAWER DETALHE LEAD -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="lead-drawer">
+  <div class="drawer-header">
+    <div style="flex:1;min-width:0">
+      <div class="drawer-nome" id="drawer-nome"></div>
+      <div class="drawer-meta" id="drawer-meta"></div>
+    </div>
+    <div class="drawer-close" onclick="closeDrawer()">×</div>
+  </div>
+  <div class="drawer-body">
+
+    <div>
+      <div class="drawer-section-title">Contato</div>
+      <div class="drawer-grid">
+        <div><div class="drawer-field-label">Telefone</div><div class="drawer-field-val" id="dr-tel">—</div></div>
+        <div><div class="drawer-field-label">E-mail</div><div class="drawer-field-val" id="dr-email">—</div></div>
+      </div>
+      <div class="drawer-contact-btns" id="dr-contact-btns"></div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title">Sobre o negócio</div>
+      <div class="drawer-grid">
+        <div><div class="drawer-field-label">Nicho</div><div class="drawer-field-val" id="dr-nicho">—</div></div>
+        <div><div class="drawer-field-label">Tipo</div><div class="drawer-field-val" id="dr-tipo">—</div></div>
+        <div><div class="drawer-field-label">Ticket médio</div><div class="drawer-field-val" id="dr-ticket">—</div></div>
+        <div><div class="drawer-field-label">Faturamento</div><div class="drawer-field-val" id="dr-faturamento">—</div></div>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title">Qualificação</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div><div class="drawer-field-label">Principal desafio</div><div class="drawer-field-val" id="dr-desafio">—</div></div>
+        <div><div class="drawer-field-label">Como capta clientes</div><div class="drawer-field-val" id="dr-captacao">—</div></div>
+        <div><div class="drawer-field-label">Tráfego pago</div><div class="drawer-field-val" id="dr-trafego">—</div></div>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title">Status & Gestão</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <select class="status-select-drawer" id="dr-status" onchange="updateDrawerStatus(this.value)"></select>
+        <button class="btn btn-ghost btn-sm" onclick="openModal(drawerLeadId)">✏️ Editar</button>
+      </div>
+      <div style="margin-top:14px" id="dr-obs-wrap">
+        <div class="drawer-field-label">Observações</div>
+        <div class="drawer-field-val" id="dr-obs" style="color:var(--text-dim);font-size:13px;margin-top:4px"></div>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title">Histórico de atividades</div>
+      <div class="hist-timeline" id="hist-timeline"></div>
+      <div class="add-hist">
+        <div class="add-hist-title">Registrar atividade</div>
+        <div class="hist-tipos" id="hist-tipos">
+          <div class="hist-tipo-btn" data-tipo="📞 Ligação" onclick="selTipo(this)">📞 Ligação</div>
+          <div class="hist-tipo-btn" data-tipo="💬 WhatsApp" onclick="selTipo(this)">💬 WhatsApp</div>
+          <div class="hist-tipo-btn" data-tipo="📧 E-mail" onclick="selTipo(this)">📧 E-mail</div>
+          <div class="hist-tipo-btn" data-tipo="🤝 Reunião" onclick="selTipo(this)">🤝 Reunião</div>
+          <div class="hist-tipo-btn" data-tipo="📄 Proposta" onclick="selTipo(this)">📄 Proposta</div>
+          <div class="hist-tipo-btn" data-tipo="📝 Nota" onclick="selTipo(this)">📝 Nota</div>
+        </div>
+        <textarea class="form-textarea" id="hist-desc" placeholder="Descreva o que aconteceu..." style="margin-bottom:10px"></textarea>
+        <button class="btn btn-primary" onclick="addHistorico()" style="width:100%">Registrar</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- MODAL NOVO/EDITAR LEAD -->
@@ -629,16 +765,9 @@ function renderTable() {
     const origemBadge = l.origem === 'site'
       ? `<span class="badge" style="background:rgba(14,165,233,.12);color:var(--cyan)">🌐 Site</span>`
       : `<span class="badge" style="background:rgba(100,116,139,.12);color:var(--gray)">Manual</span>`;
-    const temForm = l.origem === 'site' && (l.desafio || l.nicho || l.tipo);
-    const detailFields = [
-      ['Nicho', l.nicho], ['Tipo', l.tipo], ['Ticket médio', l.ticket],
-      ['Faturamento', l.faturamento], ['Principal desafio', l.desafio],
-      ['Como capta clientes', l.captacao], ['Tráfego pago', l.trafego],
-      ['Observações', l.obs]
-    ].filter(([,v]) => v);
     return `
-      <tr style="cursor:${temForm ? 'pointer' : 'default'}" onclick="${temForm ? `toggleDetail('${l.id}')` : ''}">
-        <td style="text-align:center;color:var(--text-dim);font-size:12px">${temForm ? `<span id="arrow-${l.id}">▶</span>` : ''}</td>
+      <tr style="cursor:pointer" onclick="openDrawer('${l.id}')">
+        <td style="width:28px"></td>
         <td>
           <div style="font-weight:600">${l.nome}</div>
           ${l.nicho ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${l.nicho}</div>` : ''}
@@ -660,30 +789,121 @@ function renderTable() {
             <div class="action-btn del" onclick="deleteLead('${l.id}')" title="Excluir">🗑️</div>
           </div>
         </td>
-      </tr>
-      ${temForm ? `
-      <tr id="detail-${l.id}" style="display:none">
-        <td></td>
-        <td colspan="6" style="padding:0 16px 16px">
-          <div style="background:var(--surface2);border-radius:10px;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
-            ${detailFields.map(([label, val]) => `
-              <div>
-                <div style="font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">${label}</div>
-                <div style="font-size:13px;font-weight:500">${val}</div>
-              </div>`).join('')}
-          </div>
-        </td>
-      </tr>` : ''}`;
+      </tr>`;
   }).join('');
 }
 
-// ── EXPANDIR LINHA ──
-function toggleDetail(id) {
-  const row = document.getElementById('detail-' + id);
-  const arrow = document.getElementById('arrow-' + id);
-  const open = row.style.display === 'table-row';
-  row.style.display = open ? 'none' : 'table-row';
-  if (arrow) arrow.textContent = open ? '▶' : '▼';
+// ── DRAWER ──
+let drawerLeadId = null;
+let selectedTipo = '';
+
+const HIST_ICONS = { '📞 Ligação':'📞','💬 WhatsApp':'💬','📧 E-mail':'📧','🤝 Reunião':'🤝','📄 Proposta':'📄','📝 Nota':'📝' };
+
+function selTipo(btn) {
+  document.querySelectorAll('.hist-tipo-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedTipo = btn.dataset.tipo;
+}
+
+async function openDrawer(id) {
+  drawerLeadId = id;
+  const l = leads.find(x => x.id === id);
+  if (!l) return;
+
+  document.getElementById('drawer-nome').textContent = l.nome;
+
+  const origemBadge = l.origem === 'site'
+    ? `<span class="badge" style="background:rgba(14,165,233,.12);color:var(--cyan)">🌐 Site</span>`
+    : `<span class="badge" style="background:rgba(100,116,139,.12);color:var(--gray)">Manual</span>`;
+  const data = l.created_at ? new Date(l.created_at).toLocaleDateString('pt-BR') : '';
+  document.getElementById('drawer-meta').innerHTML = `
+    <span class="badge badge-${l.status}">${STATUS_LABELS[l.status]}</span>
+    ${origemBadge}
+    ${data ? `<span style="font-size:12px;color:var(--text-dim)">desde ${data}</span>` : ''}`;
+
+  const f = (id, val) => document.getElementById(id).textContent = val || '—';
+  f('dr-tel', l.telefone); f('dr-email', l.email);
+  f('dr-nicho', l.nicho); f('dr-tipo', l.tipo);
+  f('dr-ticket', l.ticket); f('dr-faturamento', l.faturamento);
+  f('dr-desafio', l.desafio); f('dr-captacao', l.captacao); f('dr-trafego', l.trafego);
+  f('dr-obs', l.obs || 'Nenhuma observação.');
+
+  const tel = (l.telefone || '').replace(/\D/g,'');
+  document.getElementById('dr-contact-btns').innerHTML = `
+    ${tel ? `<a class="btn btn-ghost btn-sm" href="https://wa.me/55${tel}" target="_blank">💬 WhatsApp</a>` : ''}
+    ${l.email ? `<a class="btn btn-ghost btn-sm" href="mailto:${l.email}">📧 E-mail</a>` : ''}`;
+
+  const statusSel = document.getElementById('dr-status');
+  statusSel.innerHTML = Object.entries(STATUS_LABELS).map(([v,t]) =>
+    `<option value="${v}" ${l.status===v?'selected':''}>${t}</option>`).join('');
+
+  document.querySelectorAll('.hist-tipo-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('hist-desc').value = '';
+  selectedTipo = '';
+
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('lead-drawer').classList.add('open');
+
+  await loadHistorico(id);
+}
+
+function closeDrawer() {
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('lead-drawer').classList.remove('open');
+  drawerLeadId = null;
+}
+
+async function loadHistorico(leadId) {
+  const { data } = await sb.from('historico')
+    .select('*').eq('lead_id', leadId).order('created_at', { ascending: false });
+  const el = document.getElementById('hist-timeline');
+  if (!data || !data.length) {
+    el.innerHTML = `<div class="hist-empty">Nenhuma atividade registrada ainda.</div>`;
+    return;
+  }
+  el.innerHTML = data.map(h => {
+    const dt = new Date(h.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+    return `
+      <div class="hist-item">
+        <div class="hist-icon">${HIST_ICONS[h.tipo] || '📝'}</div>
+        <div class="hist-content">
+          <div class="hist-tipo">${h.tipo}</div>
+          <div class="hist-desc">${h.descricao || ''}</div>
+          <div class="hist-date">${dt}</div>
+        </div>
+        <div class="hist-del" onclick="deleteHistorico('${h.id}')">✕</div>
+      </div>`;
+  }).join('');
+}
+
+async function addHistorico() {
+  if (!drawerLeadId || !selectedTipo) { showToast('Selecione um tipo de atividade'); return; }
+  const desc = document.getElementById('hist-desc').value.trim();
+  if (!desc) { showToast('Descreva a atividade'); return; }
+  const { error } = await sb.from('historico').insert({ lead_id: drawerLeadId, tipo: selectedTipo, descricao: desc });
+  if (error) { showToast('Erro ao registrar'); return; }
+  document.getElementById('hist-desc').value = '';
+  document.querySelectorAll('.hist-tipo-btn').forEach(b => b.classList.remove('selected'));
+  selectedTipo = '';
+  await loadHistorico(drawerLeadId);
+  showToast('Atividade registrada!');
+}
+
+async function deleteHistorico(id) {
+  await sb.from('historico').delete().eq('id', id);
+  await loadHistorico(drawerLeadId);
+}
+
+async function updateDrawerStatus(status) {
+  if (!drawerLeadId) return;
+  await sb.from('leads').update({ status, updated_at: new Date().toISOString() }).eq('id', drawerLeadId);
+  const l = leads.find(x => x.id === drawerLeadId);
+  if (l) l.status = status;
+  document.getElementById('drawer-meta').querySelector('.badge:first-child').className = `badge badge-${status}`;
+  document.getElementById('drawer-meta').querySelector('.badge:first-child').textContent = STATUS_LABELS[status];
+  renderTable();
+  renderDashboard();
+  showToast('Status atualizado!');
 }
 
 // ── MODAL ──
